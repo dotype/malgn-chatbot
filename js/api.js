@@ -4,9 +4,10 @@
  * Backend API와 통신하는 함수들을 제공합니다.
  */
 
-// API 기본 URL (개발 환경)
-// 배포 시에는 실제 Workers URL로 변경하세요
-const API_BASE_URL = 'http://localhost:8787';
+// API 기본 URL (환경에 따라 자동 선택)
+const API_BASE_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:8787'
+  : 'https://malgn-chatbot-api.dotype.workers.dev';
 
 /**
  * API 객체
@@ -187,6 +188,35 @@ const API = {
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.error?.message || '콘텐츠 삭제 실패');
+    }
+
+    return response.json();
+  },
+
+  /**
+   * 콘텐츠 수정
+   * @param {number} id - 콘텐츠 ID
+   * @param {string} title - 새 제목
+   * @param {string|null} content - 새 내용 (선택적)
+   * @returns {Promise<Object>} - API 응답
+   */
+  async updateContent(id, title, content = null) {
+    const body = { title };
+    if (content) {
+      body.content = content;
+    }
+
+    const response = await fetch(`${this.getBaseUrl()}/contents/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error?.message || '콘텐츠 수정 실패');
     }
 
     return response.json();

@@ -247,17 +247,21 @@ const API = {
   /**
    * 새 세션 생성
    * @param {number[]} contentIds - 연결할 콘텐츠 ID 배열 (필수)
+   * @param {Object} settings - AI 설정 (선택) { persona, temperature, topP }
    * @returns {Promise<Object>} - API 응답
    */
-  async createSession(contentIds = []) {
+  async createSession(contentIds = [], settings = null) {
+    const body = { content_ids: contentIds };
+    if (settings) {
+      body.settings = settings;
+    }
+
     const response = await fetch(`${this.getBaseUrl()}/sessions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        content_ids: contentIds
-      })
+      body: JSON.stringify(body)
     });
 
     if (!response.ok) {

@@ -131,8 +131,11 @@ const Sessions = {
       return;
     }
 
+    // AI 설정 가져오기
+    const aiSettings = typeof Settings !== 'undefined' ? Settings.getAISettings() : null;
+
     try {
-      const result = await API.createSession(contentIds);
+      const result = await API.createSession(contentIds, aiSettings);
 
       if (result.success) {
         const newSession = result.data;

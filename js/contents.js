@@ -441,8 +441,9 @@ const Contents = {
       titleInput.value = content.content_nm || '';
 
       // 타입에 따라 내용 영역 표시/숨김 및 편집 가능 여부 설정
-      const isLink = contentType === 'link';
-      const isPdf = contentType === 'pdf';
+      const typeLower = contentType?.toLowerCase();
+      const isLink = typeLower === 'link';
+      const isPdf = typeLower === 'pdf';
 
       if (isPdf) {
         // PDF: 추출된 텍스트 표시하되 읽기 전용
@@ -502,8 +503,9 @@ const Contents = {
     const id = Number(idInput.value);
     const contentType = typeInput.value;
     const title = titleInput.value.trim();
-    const isPdf = contentType === 'pdf';
-    const isLink = contentType === 'link';
+    const typeLower = contentType?.toLowerCase();
+    const isPdf = typeLower === 'pdf';
+    const isLink = typeLower === 'link';
 
     // PDF/링크 타입은 내용 수정 불가, 텍스트 및 기타 파일(txt, md)은 내용 수정 가능
     const content = (isPdf || isLink) ? null : textArea.value.trim();

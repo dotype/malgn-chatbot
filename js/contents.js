@@ -440,17 +440,29 @@ const Contents = {
       typeInput.value = contentType;
       titleInput.value = content.content_nm || '';
 
-      // 파일 타입 여부에 따라 내용 영역 표시/숨김
+      // 타입에 따라 내용 영역 표시/숨김 및 편집 가능 여부 설정
+      const isLink = contentType === 'link';
+
       if (isFile) {
+        // 파일: 내용 숨김
         textContainer.hidden = true;
         fileNotice.hidden = false;
         textArea.value = '';
-      } else {
+        textArea.readOnly = false;
+      } else if (isLink) {
+        // 링크(자막): 내용 표시하되 읽기 전용
         textContainer.hidden = false;
         fileNotice.hidden = true;
-        // 청크들의 내용을 합쳐서 보여주기
-        const fullContent = content.chunks?.map(c => c.content).join('\n\n') || '';
-        textArea.value = fullContent;
+        textArea.value = content.content || '';
+        textArea.readOnly = true;
+        textArea.style.backgroundColor = '#f5f5f5';
+      } else {
+        // 텍스트: 내용 표시 및 편집 가능
+        textContainer.hidden = false;
+        fileNotice.hidden = true;
+        textArea.value = content.content || '';
+        textArea.readOnly = false;
+        textArea.style.backgroundColor = '';
       }
 
       // 저장 버튼 이벤트 (기존 이벤트 제거 후 새로 등록)
@@ -482,9 +494,10 @@ const Contents = {
     const contentType = typeInput.value;
     const title = titleInput.value.trim();
     const isFile = this.isFileType(contentType);
+    const isLink = contentType === 'link';
 
-    // 파일 타입이 아닌 경우에만 내용 가져오기
-    const content = isFile ? null : textArea.value.trim();
+    // 파일/링크 타입이 아닌 경우에만 내용 가져오기 (텍스트만 내용 수정 가능)
+    const content = (isFile || isLink) ? null : textArea.value.trim();
 
     if (!title) {
       alert('제목을 입력해주세요.');
@@ -498,7 +511,7 @@ const Contents = {
     saveBtn.querySelector('.saving-text').classList.remove('d-none');
 
     try {
-      // 파일 타입은 항상 제목만 수정, 그 외는 내용이 있으면 함께 수정
+      // 파일/링크 타입은 제목만 수정, 텍스트 타입은 내용도 함께 수정
       const result = await API.updateContent(id, title, content || null);
 
       if (result.success) {

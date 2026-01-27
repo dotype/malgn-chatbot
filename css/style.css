@@ -445,8 +445,7 @@ h1, h5.card-title {
 
 /* Document List */
 .document-list {
-  max-height: 200px;
-  overflow-y: auto;
+  /* 높이 제한 없이 자연스럽게 확장 */
 }
 
 .document-list__empty {

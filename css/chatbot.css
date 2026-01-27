@@ -119,9 +119,6 @@
 /* Blue Tab Content */
 .chatbot-content {
   flex: 0 0 auto;
-  min-height: 100px;
-  max-height: 130px;
-  overflow-y: auto;
   background-color: var(--chatbot-bg-alt);
   border-bottom: 1px solid var(--chatbot-border);
   padding: 12px 16px;

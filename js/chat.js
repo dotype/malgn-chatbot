@@ -248,10 +248,23 @@ const Chat = {
       goalsText.textContent = learning.goal || '학습 목표가 설정되지 않았습니다.';
     }
 
-    // 요약
+    // 요약 (배열 또는 문자열)
     const summaryText = document.getElementById('summaryText');
     if (summaryText) {
-      summaryText.textContent = learning.summary || '요약이 생성되지 않았습니다.';
+      const summary = learning.summary;
+      if (Array.isArray(summary) && summary.length > 0) {
+        // 배열인 경우 목록으로 표시
+        summaryText.innerHTML = summary.map((s, i) =>
+          `<div class="summary-item mb-1">
+            <span class="badge bg-secondary me-1">${i + 1}</span>${this.escapeHtml(s)}
+          </div>`
+        ).join('');
+      } else if (summary) {
+        // 문자열인 경우 그대로 표시
+        summaryText.textContent = summary;
+      } else {
+        summaryText.textContent = '요약이 생성되지 않았습니다.';
+      }
     }
 
     // 추천 질문

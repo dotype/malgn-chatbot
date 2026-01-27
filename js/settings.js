@@ -5,16 +5,16 @@
  */
 
 const Settings = {
-  // 기본 설정값
+  // 기본 설정값 (schema.sql과 일치)
   defaults: {
     persona: '당신은 친절하고 전문적인 AI 튜터입니다. 학생들이 이해하기 쉽게 설명하고, 질문에 정확하게 답변해 주세요.',
-    temperature: 0.7,
+    temperature: 0.3,
     topP: 0.9,
     maxTokens: 1024,
     chatWidth: 380,
     chatHeight: 650,
     summaryCount: 3,
-    recommendCount: 5,
+    recommendCount: 3,
     quizCount: 5
   },
 

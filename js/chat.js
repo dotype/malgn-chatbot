@@ -258,13 +258,13 @@ const Chat = {
           </div>`
         ).join('');
 
-        // 추천 질문 클릭 이벤트
+        // 추천 질문 클릭 이벤트 - 바로 질문 전송
         recommendText.querySelectorAll('.recommend-question').forEach(el => {
           el.addEventListener('click', () => {
             const question = el.dataset.question;
-            if (this.chatInput) {
+            if (this.chatInput && question) {
               this.chatInput.value = question;
-              this.chatInput.focus();
+              this.sendMessage();
             }
           });
         });

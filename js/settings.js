@@ -9,7 +9,7 @@ const Settings = {
   defaults: {
     persona: '당신은 친절하고 전문적인 AI 튜터입니다. 학생들이 이해하기 쉽게 설명하고, 질문에 정확하게 답변해 주세요.',
     temperature: 0.3,
-    topP: 0.9,
+    topP: 0.3,
     maxTokens: 1024,
     chatWidth: 380,
     chatHeight: 650,

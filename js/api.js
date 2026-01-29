@@ -32,86 +32,62 @@ const API = {
     return this.baseUrl || API_BASE_URL;
   },
 
-  // ─── 인증 관련 ──────────────────────────────────
+  // ─── 인증 관련 (API Key) ────────────────────────
 
   /**
-   * 토큰 저장
+   * API Key 저장
    */
-  setToken(token) {
-    localStorage.setItem('auth_token', token);
+  setApiKey(apiKey) {
+    localStorage.setItem('api_key', apiKey);
   },
 
   /**
-   * 토큰 조회
+   * API Key 조회
    */
-  getToken() {
-    return localStorage.getItem('auth_token');
+  getApiKey() {
+    return localStorage.getItem('api_key');
   },
 
   /**
-   * 토큰 삭제
+   * API Key 삭제
    */
-  removeToken() {
-    localStorage.removeItem('auth_token');
+  removeApiKey() {
+    localStorage.removeItem('api_key');
   },
 
   /**
-   * 로그인 여부 확인
+   * 인증 여부 확인
    */
-  isLoggedIn() {
-    return !!this.getToken();
+  isAuthenticated() {
+    return !!this.getApiKey();
   },
 
   /**
    * Authorization 헤더 반환
    */
   getAuthHeaders() {
-    const token = this.getToken();
-    if (token) {
-      return { 'Authorization': `Bearer ${token}` };
+    const apiKey = this.getApiKey();
+    if (apiKey) {
+      return { 'Authorization': `Bearer ${apiKey}` };
     }
     return {};
   },
 
   /**
-   * 로그인
-   * @param {string} username
-   * @param {string} password
-   * @returns {Promise<Object>}
-   */
-  async login(username, password) {
-    const response = await fetch(`${this.getBaseUrl()}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.error?.message || '로그인 실패');
-    }
-
-    this.setToken(result.data.token);
-    return result;
-  },
-
-  /**
-   * 로그아웃
+   * 로그아웃 (API Key 삭제)
    */
   logout() {
-    this.removeToken();
+    this.removeApiKey();
   },
 
   /**
-   * 응답 처리 (401 자동 로그아웃)
+   * 응답 처리 (401 시 API Key 입력 요청)
    */
   async handleResponse(response) {
     if (response.status === 401) {
-      this.removeToken();
-      // 로그인 모달 표시 이벤트 발생
-      window.dispatchEvent(new CustomEvent('auth:logout'));
-      throw new Error('인증이 만료되었습니다. 다시 로그인해 주세요.');
+      this.removeApiKey();
+      window.dispatchEvent(new CustomEvent('auth:required'));
+      throw new Error('API Key가 유효하지 않습니다. 다시 입력해 주세요.');
     }
 
     if (!response.ok) {

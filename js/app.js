@@ -14,26 +14,26 @@ const App = {
     this.bindElements();
     this.bindEvents();
 
-    // 자동 로그인 후 모듈 초기화
-    await this.ensureLoggedIn();
+    // API Key 확인 후 모듈 초기화
+    await this.ensureAuthenticated();
     this.initModules();
 
     console.log('AI 튜터 맑은샘 준비 완료!');
   },
 
   /**
-   * 자동 로그인 (토큰이 없거나 만료된 경우)
+   * API Key 자동 설정 (없으면 기본 키 적용)
    */
-  async ensureLoggedIn() {
-    if (API.isLoggedIn()) {
+  async ensureAuthenticated() {
+    if (API.isAuthenticated()) {
       return;
     }
 
     try {
-      await API.login('admin', 'admin123');
-      console.log('자동 로그인 완료');
+      API.setApiKey('5Ot1la9ausoT0QUT4KsZlFwoW4TGIjb7NcIr1bKj');
+      console.log('API Key 자동 설정 완료');
     } catch (error) {
-      console.error('자동 로그인 실패:', error.message);
+      console.error('API Key 설정 실패:', error.message);
     }
   },
 
@@ -78,8 +78,8 @@ const App = {
       tab.addEventListener('click', () => this.switchTab(tab.dataset.tab));
     });
 
-    // 401 발생 시 자동 재로그인
-    window.addEventListener('auth:logout', () => this.ensureLoggedIn());
+    // 401 발생 시 API Key 재설정
+    window.addEventListener('auth:required', () => this.ensureAuthenticated());
   },
 
   /**
@@ -181,16 +181,16 @@ const App = {
     const settings = typeof Settings !== 'undefined' ? Settings.getSettings() : {};
     const contentIds = typeof Contents !== 'undefined' ? Contents.getSelectedContentIds() : [];
     const apiUrl = API.getBaseUrl();
-    const token = API.getToken() || '';
+    const apiKey = API.getApiKey() || '';
 
-    const code = this.generateEmbedCode(apiUrl, settings, contentIds, token);
+    const code = this.generateEmbedCode(apiUrl, settings, contentIds, apiKey);
     this.embedCodeEl.textContent = code;
   },
 
   /**
    * 임베드 코드 생성
    */
-  generateEmbedCode(apiUrl, settings, contentIds, token) {
+  generateEmbedCode(apiUrl, settings, contentIds, apiKey) {
     const persona = (settings.persona || '').replace(/"/g, '\\"').replace(/\n/g, '\\n');
     const contentIdsStr = contentIds.length > 0 ? contentIds.join(', ') : '';
 
@@ -198,7 +198,7 @@ const App = {
 <script>
 window.MalgnTutor = {
   apiUrl: "${apiUrl}",
-  token: "${token}",
+  apiKey: "${apiKey}",
   contentIds: [${contentIdsStr}],
   settings: {
     persona: "${persona}",

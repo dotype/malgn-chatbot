@@ -626,3 +626,122 @@
   background: var(--chatbot-bg-alt);
   border-radius: 8px;
 }
+
+/* ============================================
+   Embed Widget - Standalone Components
+   Bootstrap 없이 동작하는 자체 스타일
+   ============================================ */
+
+/* Tab content (embed용 malgn- 접두어) */
+.malgn-tab-content {
+  display: none;
+}
+
+.malgn-tab-content.active {
+  display: block;
+}
+
+/* Buttons */
+.chatbot-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chatbot-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chatbot-btn-primary {
+  background: var(--chatbot-primary);
+  color: white;
+  border-color: var(--chatbot-primary);
+}
+
+.chatbot-btn-primary:hover:not(:disabled) {
+  background: var(--chatbot-secondary);
+  border-color: var(--chatbot-secondary);
+}
+
+.chatbot-btn-outline {
+  background: white;
+  color: var(--chatbot-text);
+  border-color: var(--chatbot-border);
+}
+
+.chatbot-btn-outline:hover:not(:disabled) {
+  background: var(--chatbot-bg-alt);
+  border-color: var(--chatbot-primary);
+  color: var(--chatbot-primary);
+}
+
+/* Badges */
+.chatbot-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background: #6c757d;
+  color: white;
+  margin-right: 6px;
+}
+
+.chatbot-badge-primary {
+  background: var(--chatbot-primary);
+}
+
+.chatbot-badge-info {
+  background: #0dcaf0;
+}
+
+.chatbot-badge-warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+/* Text colors (Bootstrap 대체) */
+.chatbot .text-success { color: #198754; }
+.chatbot .text-danger { color: #dc3545; }
+.chatbot .text-warning { color: #ffc107; }
+.chatbot .text-muted { color: #6c757d; }
+.chatbot .small { font-size: 0.85em; }
+
+/* Summary item (embed용) */
+.chatbot .summary-item {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+/* Recommend question (embed용) */
+.chatbot .recommend-question {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  background: white;
+  border: 1px solid var(--chatbot-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chatbot .recommend-question:hover {
+  background: var(--chatbot-bg-alt);
+  border-color: var(--chatbot-primary);
+  color: var(--chatbot-primary);
+}
+
+/* Quiz spacing (embed용) */
+.chatbot .quiz-progress { margin-bottom: 8px; }
+.chatbot .quiz-question { margin-bottom: 8px; }
+.chatbot .quiz-nav { margin-top: 12px; }
+.chatbot .quiz-result { margin-top: 8px; }

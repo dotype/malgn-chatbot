@@ -36,11 +36,9 @@ export class TabManager {
     if (activeTab) activeTab.classList.add('active');
     if (activeContent) activeContent.classList.add('active');
 
-    // 탭 콘텐츠가 보이도록 상단으로 스크롤 (렌더링 후 실행)
-    requestAnimationFrame(() => {
-      const content = document.querySelector('#malgn-chatbot .chatbot-content');
-      if (content) content.scrollIntoView({ block: 'start' });
-    });
+    // 탭 콘텐츠가 보이도록 상단으로 스크롤
+    const body = document.getElementById('malgn-body');
+    if (body) body.scrollTop = 0;
   }
 
   /**

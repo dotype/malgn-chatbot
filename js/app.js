@@ -148,6 +148,10 @@ const App = {
     // 선택된 탭 활성화
     document.querySelector(`.nav-link[data-tab="${tabName}"]`).classList.add('active');
     document.getElementById(`tab-${tabName}`).classList.add('active');
+
+    // 탭 콘텐츠가 보이도록 상단으로 스크롤
+    const chatbotBody = this.chatbot.querySelector('.chatbot-body');
+    if (chatbotBody) chatbotBody.scrollTop = 0;
   },
 
   // ─── 임베드 코드 ──────────────────────────────

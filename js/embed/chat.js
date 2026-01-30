@@ -34,6 +34,9 @@ export class ChatManager {
         this.sendMessage();
       }
     });
+
+    // 입력창 포커스 시 최신 메시지가 보이도록 하단으로 스크롤
+    this.inputEl.addEventListener('focus', () => this.scrollToBottom());
   }
 
   /**

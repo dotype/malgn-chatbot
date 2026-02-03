@@ -115,10 +115,27 @@ export const UI = {
   },
 
   /**
+   * FAB 로딩 상태 설정
+   */
+  setFabLoading(loading) {
+    if (this.fab) {
+      if (loading) {
+        this.fab.classList.add('loading');
+      } else {
+        this.fab.classList.remove('loading');
+      }
+    }
+  },
+
+  /**
    * 챗봇 닫기
    */
   close() {
-    if (this.chatbot) this.chatbot.hidden = true;
+    console.log('[MalgnTutor] UI.close() called', this.chatbot, this.fab);
+    if (this.chatbot) {
+      this.chatbot.hidden = true;
+      console.log('[MalgnTutor] chatbot.hidden set to true');
+    }
     if (this.fab) this.fab.classList.remove('active');
   },
 

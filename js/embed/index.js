@@ -76,8 +76,14 @@ if (window.__malgnTutorLoaded) {
     });
     chatManager.init();
 
+    // 세션 생성 시작 → FAB 로딩 표시
+    chatManager.onSessionCreating = () => {
+      UI.setFabLoading(true);
+    };
+
     // 세션 생성 후 학습 데이터 렌더링 + 퀴즈 로딩
     chatManager.onSessionCreated = (data) => {
+      UI.setFabLoading(false);
       if (data.learning) {
         tabManager.renderLearningData(data.learning);
       }
@@ -88,15 +94,12 @@ if (window.__malgnTutorLoaded) {
 
     // 기존 세션 로드 후 학습 데이터 렌더링 + 퀴즈 로딩
     chatManager.onSessionLoaded = (data) => {
-      if (data.session && data.session.learning_goal) {
-        tabManager.renderLearningData({
-          goal: data.session.learning_goal,
-          summary: data.session.learning_summary,
-          recommendedQuestions: data.session.recommended_questions
-        });
+      // API 응답: data = { id, learning: { goal, summary, recommendedQuestions }, messages, ... }
+      if (data.learning) {
+        tabManager.renderLearningData(data.learning);
       }
-      if (data.session && data.session.id) {
-        quizManager.loadQuizzes(data.session.id);
+      if (data.id) {
+        quizManager.loadQuizzes(data.id);
       }
     };
 
@@ -114,7 +117,18 @@ if (window.__malgnTutorLoaded) {
     document.getElementById('malgn-fab').addEventListener('click', () => UI.toggle());
 
     // 닫기 버튼
-    document.getElementById('malgn-close').addEventListener('click', () => UI.close());
+    const closeBtn = document.getElementById('malgn-close');
+    console.log('[MalgnTutor] Close button found:', closeBtn);
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        console.log('[MalgnTutor] Close button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        UI.close();
+      });
+    } else {
+      console.error('[MalgnTutor] Close button not found!');
+    }
 
     console.log('[MalgnTutor] Initialized successfully.');
   }

@@ -13,7 +13,8 @@ export class ChatManager {
     this.isLoading = false;
 
     // 콜백
-    this.onSessionCreated = null; // (sessionData) => {}
+    this.onSessionCreating = null; // () => {} - 세션 생성 시작
+    this.onSessionCreated = null;  // (sessionData) => {} - 세션 생성 완료
   }
 
   /**
@@ -81,6 +82,11 @@ export class ChatManager {
    */
   async ensureSession() {
     if (this.sessionId) return this.sessionId;
+
+    // 세션 생성 시작 콜백 (로딩 표시용)
+    if (this.onSessionCreating) {
+      this.onSessionCreating();
+    }
 
     const result = await this.api.createSession(
       this.config.contentIds || [],

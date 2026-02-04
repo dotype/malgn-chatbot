@@ -24,7 +24,9 @@
             <h1 class="header-title">AI 튜터 맑은샘</h1>
             <p class="header-subtitle">LMS에 쉽게 통합할 수 있는 AI 튜터 챗봇</p>
           </div>
-          <div class="header-actions">
+          <div class="header-actions d-flex align-items-center gap-2">
+            <!-- 테넌트 선택 드롭다운 -->
+            <div id="tenantSelector"></div>
             <button class="btn btn-header-primary" id="openChatBtn">
               <i class="bi bi-chat-dots-fill me-2"></i>채팅 시작
             </button>
@@ -415,6 +417,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- App Scripts -->
   <script src="js/api.js"></script>
+  <script src="js/tenants.js"></script>
   <script src="js/contents.js"></script>
   <script src="js/sessions.js"></script>
   <script src="js/chat.js"></script>

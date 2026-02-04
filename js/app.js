@@ -11,29 +11,25 @@ const App = {
   async init() {
     console.log('AI 튜터 맑은샘 초기화...');
 
+    // 테넌트 먼저 초기화 (API 설정에 필요)
+    this.initTenants();
+
     this.bindElements();
     this.bindEvents();
 
-    // API Key 확인 후 모듈 초기화
-    await this.ensureAuthenticated();
+    // 모듈 초기화
     this.initModules();
 
     console.log('AI 튜터 맑은샘 준비 완료!');
   },
 
   /**
-   * API Key 자동 설정 (없으면 기본 키 적용)
+   * 테넌트 초기화
    */
-  async ensureAuthenticated() {
-    if (API.isAuthenticated()) {
-      return;
-    }
-
-    try {
-      API.setApiKey('5Ot1la9ausoT0QUT4KsZlFwoW4TGIjb7NcIr1bKj');
-      console.log('API Key 자동 설정 완료');
-    } catch (error) {
-      console.error('API Key 설정 실패:', error.message);
+  initTenants() {
+    if (typeof Tenants !== 'undefined') {
+      Tenants.init();
+      console.log('테넌트 초기화 완료:', Tenants.getCurrentTenant()?.name);
     }
   },
 
@@ -78,8 +74,39 @@ const App = {
       tab.addEventListener('click', () => this.switchTab(tab.dataset.tab));
     });
 
-    // 401 발생 시 API Key 재설정
-    window.addEventListener('auth:required', () => this.ensureAuthenticated());
+    // 401 발생 시 재인증 시도
+    window.addEventListener('auth:required', () => {
+      const tenant = Tenants?.getCurrentTenant();
+      if (tenant) {
+        API.setApiKey(tenant.apiKey);
+      }
+    });
+
+    // 테넌트 변경 시 데이터 리로드
+    window.addEventListener('tenant:changed', (e) => this.onTenantChanged(e.detail));
+  },
+
+  /**
+   * 테넌트 변경 처리
+   */
+  onTenantChanged(tenant) {
+    console.log('테넌트 변경:', tenant.name);
+
+    // 데이터 리로드
+    if (typeof Contents !== 'undefined') {
+      Contents.loadContents();
+    }
+    if (typeof Sessions !== 'undefined') {
+      Sessions.loadSessions();
+    }
+
+    // 채팅 초기화
+    if (typeof Chat !== 'undefined') {
+      Chat.clearMessages();
+    }
+
+    // 임베드 코드 업데이트
+    this.updateEmbedCode();
   },
 
   /**

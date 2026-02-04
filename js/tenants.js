@@ -9,9 +9,9 @@ const Tenants = {
   // 새 테넌트 추가 시 여기에 추가하세요
   list: [
     {
-      id: 'user1',
-      name: 'User1 (기본)',
-      apiUrl: 'https://malgn-chatbot-api-user1.dotype.workers.dev',
+      id: 'default',
+      name: '기본',
+      apiUrl: 'https://malgn-chatbot-api.dotype.workers.dev',
       apiKey: '5Ot1la9ausoT0QUT4KsZlFwoW4TGIjb7NcIr1bKj'
     },
     {
@@ -37,7 +37,14 @@ const Tenants = {
    */
   init() {
     // localStorage에서 마지막 선택된 테넌트 복원
-    const savedTenantId = localStorage.getItem('selected_tenant');
+    let savedTenantId = localStorage.getItem('selected_tenant');
+
+    // user1 → default 마이그레이션
+    if (savedTenantId === 'user1') {
+      savedTenantId = 'default';
+      localStorage.setItem('selected_tenant', 'default');
+    }
+
     if (savedTenantId && this.getTenant(savedTenantId)) {
       this.currentTenantId = savedTenantId;
     } else {
@@ -123,11 +130,12 @@ const Tenants = {
 
     container.innerHTML = `
       <div class="dropdown">
-        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2"
+        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2"
                 type="button"
                 id="tenantDropdownBtn"
                 data-bs-toggle="dropdown"
-                aria-expanded="false">
+                aria-expanded="false"
+                style="background: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.5); color: #333;">
           <i class="bi bi-building"></i>
           <span id="currentTenantName">${currentTenant?.name || '테넌트 선택'}</span>
         </button>

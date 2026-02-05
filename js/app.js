@@ -245,7 +245,8 @@ window.MalgnTutor = {
     maxTokens: ${settings.maxTokens ?? 1024},
     summaryCount: ${settings.summaryCount ?? 3},
     recommendCount: ${settings.recommendCount ?? 3},
-    quizCount: ${settings.quizCount ?? 5}
+    choiceQuizCount: ${settings.choiceQuizCount ?? 3},
+    oxQuizCount: ${settings.oxQuizCount ?? 2}
   },
   width: ${settings.chatWidth ?? 380},
   height: ${settings.chatHeight ?? 650}

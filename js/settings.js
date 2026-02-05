@@ -15,7 +15,8 @@ const Settings = {
     chatHeight: 650,
     summaryCount: 3,
     recommendCount: 3,
-    quizCount: 5
+    choiceQuizCount: 3,
+    oxQuizCount: 2
   },
 
   // 설정 저장 타이머 (디바운스용)
@@ -54,8 +55,8 @@ const Settings = {
     this.summaryCountValue = document.getElementById('summaryCountValue');
     this.recommendCountSlider = document.getElementById('recommendCountSlider');
     this.recommendCountValue = document.getElementById('recommendCountValue');
-    this.quizCountSlider = document.getElementById('quizCountSlider');
-    this.quizCountValue = document.getElementById('quizCountValue');
+    this.choiceQuizCountInput = document.getElementById('choiceQuizCountSlider');
+    this.oxQuizCountInput = document.getElementById('oxQuizCountSlider');
 
     // 챗봇 요소
     this.chatbot = document.getElementById('chatbot');
@@ -114,9 +115,13 @@ const Settings = {
       this.saveSettings();
     });
 
-    // 퀴즈 생성 수 슬라이더
-    this.quizCountSlider.addEventListener('input', () => {
-      this.quizCountValue.textContent = this.quizCountSlider.value;
+    // 4지선다 퀴즈 수
+    this.choiceQuizCountInput.addEventListener('change', () => {
+      this.saveSettings();
+    });
+
+    // OX 퀴즈 수
+    this.oxQuizCountInput.addEventListener('change', () => {
       this.saveSettings();
     });
   },
@@ -175,9 +180,11 @@ const Settings = {
       this.recommendCountSlider.value = settings.recommendCount;
       this.recommendCountValue.textContent = settings.recommendCount;
     }
-    if (settings.quizCount !== undefined) {
-      this.quizCountSlider.value = settings.quizCount;
-      this.quizCountValue.textContent = settings.quizCount;
+    if (settings.choiceQuizCount !== undefined) {
+      this.choiceQuizCountInput.value = settings.choiceQuizCount;
+    }
+    if (settings.oxQuizCount !== undefined) {
+      this.oxQuizCountInput.value = settings.oxQuizCount;
     }
 
     // 채팅창 크기 적용
@@ -279,9 +286,11 @@ const Settings = {
       this.recommendCountSlider.value = settings.recommendCount;
       this.recommendCountValue.textContent = settings.recommendCount;
     }
-    if (settings.quizCount !== undefined) {
-      this.quizCountSlider.value = settings.quizCount;
-      this.quizCountValue.textContent = settings.quizCount;
+    if (settings.choiceQuizCount !== undefined) {
+      this.choiceQuizCountInput.value = settings.choiceQuizCount;
+    }
+    if (settings.oxQuizCount !== undefined) {
+      this.oxQuizCountInput.value = settings.oxQuizCount;
     }
   },
 
@@ -298,7 +307,8 @@ const Settings = {
       chatHeight: parseInt(this.chatHeightSlider.value),
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
-      quizCount: parseInt(this.quizCountSlider.value)
+      choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
+      oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
   },
 
@@ -313,7 +323,8 @@ const Settings = {
       maxTokens: parseInt(this.maxTokensSlider.value),
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
-      quizCount: parseInt(this.quizCountSlider.value)
+      choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
+      oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
   },
 
@@ -324,7 +335,8 @@ const Settings = {
     return {
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
-      quizCount: parseInt(this.quizCountSlider.value)
+      choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
+      oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
   },
 

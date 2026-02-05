@@ -138,15 +138,6 @@
                   <input type="range" class="form-range" id="recommendCountSlider" min="1" max="10" step="1" value="3">
                   <div class="form-text">AI가 제안하는 질문 개수</div>
                 </div>
-                <!-- Quiz Count -->
-                <div class="mb-0">
-                  <label class="form-label fw-medium d-flex justify-content-between">
-                    <span>퀴즈 생성 수</span>
-                    <span class="badge bg-info" id="quizCountValue">5</span>
-                  </label>
-                  <input type="range" class="form-range" id="quizCountSlider" min="1" max="20" step="1" value="5">
-                  <div class="form-text">자동 생성되는 퀴즈 문제 수</div>
-                </div>
               </div>
             </div>
           </div>
@@ -228,6 +219,20 @@
                 <div class="upload-progress" id="uploadProgress" hidden>
                   <div class="upload-progress__spinner"></div>
                   <span class="upload-progress__text">처리 중...</span>
+                </div>
+                <!-- Quiz Settings -->
+                <div class="quiz-settings mt-3 p-2 bg-light rounded">
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>퀴즈</span>
+                    <div class="d-flex align-items-center gap-1">
+                      <label class="small text-nowrap">4지선다</label>
+                      <input type="number" class="form-control form-control-sm" id="choiceQuizCountSlider" min="0" max="10" value="3" style="width: 60px;">
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                      <label class="small text-nowrap">OX</label>
+                      <input type="number" class="form-control form-control-sm" id="oxQuizCountSlider" min="0" max="10" value="2" style="width: 60px;">
+                    </div>
+                  </div>
                 </div>
                 <!-- Document List -->
                 <div class="document-list mt-3" id="documentList">

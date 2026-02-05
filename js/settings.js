@@ -55,8 +55,13 @@ const Settings = {
     this.summaryCountValue = document.getElementById('summaryCountValue');
     this.recommendCountSlider = document.getElementById('recommendCountSlider');
     this.recommendCountValue = document.getElementById('recommendCountValue');
-    this.choiceQuizCountInput = document.getElementById('choiceQuizCountSlider');
-    this.oxQuizCountInput = document.getElementById('oxQuizCountSlider');
+
+    // 퀴즈 설정 (여러 폼에 있으므로 모두 선택)
+    this.choiceQuizCountInputs = document.querySelectorAll('.quiz-choice-count');
+    this.oxQuizCountInputs = document.querySelectorAll('.quiz-ox-count');
+    // 첫 번째 입력을 기본값으로 사용
+    this.choiceQuizCountInput = this.choiceQuizCountInputs[0];
+    this.oxQuizCountInput = this.oxQuizCountInputs[0];
 
     // 챗봇 요소
     this.chatbot = document.getElementById('chatbot');
@@ -115,14 +120,30 @@ const Settings = {
       this.saveSettings();
     });
 
-    // 4지선다 퀴즈 수
-    this.choiceQuizCountInput.addEventListener('change', () => {
-      this.saveSettings();
+    // 4지선다 퀴즈 수 (모든 입력 필드에 이벤트 바인딩)
+    this.choiceQuizCountInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        this.syncQuizInputs('choice', e.target.value);
+        this.saveSettings();
+      });
     });
 
-    // OX 퀴즈 수
-    this.oxQuizCountInput.addEventListener('change', () => {
-      this.saveSettings();
+    // OX 퀴즈 수 (모든 입력 필드에 이벤트 바인딩)
+    this.oxQuizCountInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        this.syncQuizInputs('ox', e.target.value);
+        this.saveSettings();
+      });
+    });
+  },
+
+  /**
+   * 퀴즈 입력 필드 동기화
+   */
+  syncQuizInputs(type, value) {
+    const inputs = type === 'choice' ? this.choiceQuizCountInputs : this.oxQuizCountInputs;
+    inputs.forEach(input => {
+      input.value = value;
     });
   },
 
@@ -181,10 +202,10 @@ const Settings = {
       this.recommendCountValue.textContent = settings.recommendCount;
     }
     if (settings.choiceQuizCount !== undefined) {
-      this.choiceQuizCountInput.value = settings.choiceQuizCount;
+      this.syncQuizInputs('choice', settings.choiceQuizCount);
     }
     if (settings.oxQuizCount !== undefined) {
-      this.oxQuizCountInput.value = settings.oxQuizCount;
+      this.syncQuizInputs('ox', settings.oxQuizCount);
     }
 
     // 채팅창 크기 적용
@@ -287,10 +308,10 @@ const Settings = {
       this.recommendCountValue.textContent = settings.recommendCount;
     }
     if (settings.choiceQuizCount !== undefined) {
-      this.choiceQuizCountInput.value = settings.choiceQuizCount;
+      this.syncQuizInputs('choice', settings.choiceQuizCount);
     }
     if (settings.oxQuizCount !== undefined) {
-      this.oxQuizCountInput.value = settings.oxQuizCount;
+      this.syncQuizInputs('ox', settings.oxQuizCount);
     }
   },
 

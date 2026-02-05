@@ -167,20 +167,6 @@
                     <span>링크</span>
                   </button>
                 </div>
-                <!-- Quiz Settings - shared across all forms -->
-                <div class="quiz-settings mb-3 p-2 bg-light rounded">
-                  <div class="d-flex align-items-center gap-3">
-                    <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>퀴즈</span>
-                    <div class="d-flex align-items-center gap-1">
-                      <label class="small text-nowrap">4지선다</label>
-                      <input type="number" class="form-control form-control-sm" id="choiceQuizCountSlider" min="0" max="10" value="3" style="width: 60px;">
-                    </div>
-                    <div class="d-flex align-items-center gap-1">
-                      <label class="small text-nowrap">OX</label>
-                      <input type="number" class="form-control form-control-sm" id="oxQuizCountSlider" min="0" max="10" value="2" style="width: 60px;">
-                    </div>
-                  </div>
-                </div>
                 <!-- Text Content Form -->
                 <div class="content-form active" id="form-text">
                   <div class="mb-3">
@@ -188,6 +174,20 @@
                   </div>
                   <div class="mb-3">
                     <textarea class="form-control" id="textContent" rows="4" placeholder="학습 내용을 입력하세요..."></textarea>
+                  </div>
+                  <!-- Quiz Settings -->
+                  <div class="quiz-settings mb-3 p-2 bg-light rounded">
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>퀴즈</span>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">4지선다</label>
+                        <input type="number" class="form-control form-control-sm quiz-choice-count" id="choiceQuizCountSlider" min="0" max="10" value="3" style="width: 60px;">
+                      </div>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">OX</label>
+                        <input type="number" class="form-control form-control-sm quiz-ox-count" id="oxQuizCountSlider" min="0" max="10" value="2" style="width: 60px;">
+                      </div>
+                    </div>
                   </div>
                   <button class="btn btn-primary btn-sm w-100" id="addTextBtn">
                     <i class="bi bi-plus-lg me-1"></i>텍스트 추가
@@ -213,6 +213,20 @@
                     <span id="selectedFileName"></span>
                     <button class="btn-clear-file" id="clearFileBtn">&times;</button>
                   </div>
+                  <!-- Quiz Settings -->
+                  <div class="quiz-settings mb-3 p-2 bg-light rounded">
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>퀴즈</span>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">4지선다</label>
+                        <input type="number" class="form-control form-control-sm quiz-choice-count" min="0" max="10" value="3" style="width: 60px;">
+                      </div>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">OX</label>
+                        <input type="number" class="form-control form-control-sm quiz-ox-count" min="0" max="10" value="2" style="width: 60px;">
+                      </div>
+                    </div>
+                  </div>
                   <button class="btn btn-primary btn-sm w-100" id="addFileBtn">
                     <i class="bi bi-plus-lg me-1"></i>파일 추가
                   </button>
@@ -224,6 +238,20 @@
                   </div>
                   <div class="mb-3">
                     <input type="url" class="form-control" id="linkUrl" placeholder="https://example.com/document.pdf">
+                  </div>
+                  <!-- Quiz Settings -->
+                  <div class="quiz-settings mb-3 p-2 bg-light rounded">
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="text-muted small"><i class="bi bi-question-circle me-1"></i>퀴즈</span>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">4지선다</label>
+                        <input type="number" class="form-control form-control-sm quiz-choice-count" min="0" max="10" value="3" style="width: 60px;">
+                      </div>
+                      <div class="d-flex align-items-center gap-1">
+                        <label class="small text-nowrap">OX</label>
+                        <input type="number" class="form-control form-control-sm quiz-ox-count" min="0" max="10" value="2" style="width: 60px;">
+                      </div>
+                    </div>
                   </div>
                   <button class="btn btn-primary btn-sm w-100" id="addLinkBtn">
                     <i class="bi bi-plus-lg me-1"></i>링크 추가

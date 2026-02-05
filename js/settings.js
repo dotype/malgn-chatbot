@@ -15,6 +15,7 @@ const Settings = {
     chatHeight: 650,
     summaryCount: 3,
     recommendCount: 3,
+    quizCount: 5,
     choiceQuizCount: 3,
     oxQuizCount: 2
   },
@@ -55,6 +56,8 @@ const Settings = {
     this.summaryCountValue = document.getElementById('summaryCountValue');
     this.recommendCountSlider = document.getElementById('recommendCountSlider');
     this.recommendCountValue = document.getElementById('recommendCountValue');
+    this.quizCountSlider = document.getElementById('quizCountSlider');
+    this.quizCountValue = document.getElementById('quizCountValue');
 
     // 퀴즈 설정 (여러 폼에 있으므로 모두 선택)
     this.choiceQuizCountInputs = document.querySelectorAll('.quiz-choice-count');
@@ -117,6 +120,12 @@ const Settings = {
     // 추천 질문 수 슬라이더
     this.recommendCountSlider.addEventListener('input', () => {
       this.recommendCountValue.textContent = this.recommendCountSlider.value;
+      this.saveSettings();
+    });
+
+    // 퀴즈 수 슬라이더
+    this.quizCountSlider.addEventListener('input', () => {
+      this.quizCountValue.textContent = this.quizCountSlider.value;
       this.saveSettings();
     });
 
@@ -200,6 +209,10 @@ const Settings = {
     if (settings.recommendCount !== undefined) {
       this.recommendCountSlider.value = settings.recommendCount;
       this.recommendCountValue.textContent = settings.recommendCount;
+    }
+    if (settings.quizCount !== undefined) {
+      this.quizCountSlider.value = settings.quizCount;
+      this.quizCountValue.textContent = settings.quizCount;
     }
     if (settings.choiceQuizCount !== undefined) {
       this.syncQuizInputs('choice', settings.choiceQuizCount);
@@ -307,6 +320,10 @@ const Settings = {
       this.recommendCountSlider.value = settings.recommendCount;
       this.recommendCountValue.textContent = settings.recommendCount;
     }
+    if (settings.quizCount !== undefined) {
+      this.quizCountSlider.value = settings.quizCount;
+      this.quizCountValue.textContent = settings.quizCount;
+    }
     if (settings.choiceQuizCount !== undefined) {
       this.syncQuizInputs('choice', settings.choiceQuizCount);
     }
@@ -328,6 +345,7 @@ const Settings = {
       chatHeight: parseInt(this.chatHeightSlider.value),
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
+      quizCount: parseInt(this.quizCountSlider.value),
       choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
       oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
@@ -344,6 +362,7 @@ const Settings = {
       maxTokens: parseInt(this.maxTokensSlider.value),
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
+      quizCount: parseInt(this.quizCountSlider.value),
       choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
       oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
@@ -356,6 +375,7 @@ const Settings = {
     return {
       summaryCount: parseInt(this.summaryCountSlider.value),
       recommendCount: parseInt(this.recommendCountSlider.value),
+      quizCount: parseInt(this.quizCountSlider.value),
       choiceQuizCount: parseInt(this.choiceQuizCountInput.value),
       oxQuizCount: parseInt(this.oxQuizCountInput.value)
     };
@@ -367,6 +387,22 @@ const Settings = {
   resetSettings() {
     this.applySettings(this.defaults);
     this.saveSettings();
+  },
+
+  /**
+   * 퀴즈 수 최대값 업데이트
+   * @param {number} maxQuizzes - 최대 퀴즈 수
+   */
+  updateQuizCountMax(maxQuizzes) {
+    if (this.quizCountSlider && maxQuizzes > 0) {
+      this.quizCountSlider.max = maxQuizzes;
+      // 현재 값이 max를 초과하면 조정
+      if (parseInt(this.quizCountSlider.value) > maxQuizzes) {
+        this.quizCountSlider.value = maxQuizzes;
+        this.quizCountValue.textContent = maxQuizzes;
+        this.saveSettings();
+      }
+    }
   }
 };
 

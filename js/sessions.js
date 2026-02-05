@@ -134,6 +134,9 @@ const Sessions = {
     // AI 설정 가져오기
     const aiSettings = typeof Settings !== 'undefined' ? Settings.getAISettings() : null;
 
+    // 버튼 비활성화 및 로딩 상태 표시
+    this.setNewSessionBtnLoading(true);
+
     try {
       const result = await API.createSession(contentIds, aiSettings);
 
@@ -151,6 +154,24 @@ const Sessions = {
     } catch (error) {
       console.error('세션 생성 실패:', error);
       alert('새 채팅을 시작할 수 없습니다: ' + error.message);
+    } finally {
+      // 버튼 상태 복원
+      this.setNewSessionBtnLoading(false);
+    }
+  },
+
+  /**
+   * 새 채팅 버튼 로딩 상태 설정
+   */
+  setNewSessionBtnLoading(isLoading) {
+    if (!this.newSessionBtn) return;
+
+    if (isLoading) {
+      this.newSessionBtn.disabled = true;
+      this.newSessionBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>생성 중...';
+    } else {
+      this.newSessionBtn.disabled = false;
+      this.newSessionBtn.innerHTML = '<i class="bi bi-plus-lg me-1"></i>새 채팅';
     }
   },
 

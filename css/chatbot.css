@@ -769,9 +769,16 @@
 
 .quiz-result {
   padding: 12px 16px;
-  background: var(--chatbot-bg-alt);
   border-radius: 12px;
   margin-top: 12px;
+}
+
+.quiz-result.correct {
+  background: #ECFDF5;
+}
+
+.quiz-result.wrong {
+  background: #FEF2F2;
 }
 
 .quiz-result .result-icon {
@@ -782,17 +789,19 @@
 .quiz-result .result-correct {
   color: #059669;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .quiz-result .result-wrong {
   color: #DC2626;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .quiz-result .result-explanation {
   margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--chatbot-border);
   font-size: 0.85rem;
   color: var(--chatbot-text-secondary);
   line-height: 1.5;

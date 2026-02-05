@@ -142,6 +142,7 @@ export class QuizManager {
     if (!resultEl) return;
 
     if (!userAnswer) {
+      resultEl.className = 'quiz-result';
       resultEl.innerHTML = '<span class="text-warning">답을 선택해 주세요.</span>';
       resultEl.style.display = 'block';
       return;
@@ -151,6 +152,9 @@ export class QuizManager {
     const resultClass = isCorrect ? 'result-correct' : 'result-wrong';
     const resultIcon = isCorrect ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
     const resultText = isCorrect ? '정답입니다.' : '오답입니다.';
+
+    // 배경색 클래스 추가
+    resultEl.className = `quiz-result ${isCorrect ? 'correct' : 'wrong'}`;
 
     let html = `
       <div class="${resultClass}">

@@ -9,6 +9,7 @@ export class QuizManager {
     this.quizzes = [];
     this.currentIndex = 0;
     this.answers = {};
+    this.checked = {};
   }
 
   /**
@@ -24,6 +25,7 @@ export class QuizManager {
         this.quizzes = result.data.quizzes;
         this.currentIndex = 0;
         this.answers = {};
+        this.checked = {};
         this.renderCurrentQuiz();
       } else {
         quizEl.textContent = '퀴즈가 생성되지 않았습니다.';
@@ -89,11 +91,11 @@ export class QuizManager {
             <button class="chatbot-btn chatbot-btn-outline" id="malgn-prev-quiz" ${current === 1 ? 'disabled' : ''}>
               <i class="bi bi-chevron-left"></i> 이전
             </button>
-            <button class="chatbot-btn chatbot-btn-outline" id="malgn-next-quiz" ${current === total ? 'disabled' : ''}>
+            <button class="chatbot-btn chatbot-btn-outline" id="malgn-next-quiz" ${current === total ? 'disabled' : ''} ${this.checked[quiz.id] ? '' : 'style="display:none"'}>
               다음 <i class="bi bi-chevron-right"></i>
             </button>
           </div>
-          <button class="chatbot-btn chatbot-btn-primary" id="malgn-check-answer">정답 확인</button>
+          <button class="chatbot-btn chatbot-btn-primary" id="malgn-check-answer" ${this.checked[quiz.id] ? 'style="display:none"' : ''}>정답 확인</button>
         </div>
         <div class="chatbot-quiz-result" id="malgn-quiz-result" style="display: none;"></div>
       </div>
@@ -168,5 +170,12 @@ export class QuizManager {
 
     resultEl.innerHTML = html;
     resultEl.style.display = 'block';
+
+    // 정답 확인 후 다음 버튼 표시
+    this.checked[quiz.id] = true;
+    const nextBtn = document.getElementById('malgn-next-quiz');
+    const checkBtn = document.getElementById('malgn-check-answer');
+    if (nextBtn && this.currentIndex < this.quizzes.length - 1) nextBtn.style.display = '';
+    if (checkBtn) checkBtn.style.display = 'none';
   }
 }

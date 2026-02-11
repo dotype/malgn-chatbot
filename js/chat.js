@@ -369,6 +369,7 @@ const Chat = {
     this.currentQuizIndex = 0;
     this.quizzes = quizzes;
     this.quizAnswers = {};
+    this.checkedQuizzes = {};
 
     this.showCurrentQuiz();
   },
@@ -427,10 +428,10 @@ const Chat = {
           <button class="btn btn-sm btn-outline-secondary" id="prevQuizBtn" ${current === 1 ? 'disabled' : ''}>
             <i class="bi bi-chevron-left"></i> 이전
           </button>
-          <button class="btn btn-sm btn-outline-secondary ms-2" id="nextQuizBtn" ${current === total ? 'disabled' : ''}>
+          <button class="btn btn-sm btn-outline-secondary ms-2" id="nextQuizBtn" ${current === total ? 'disabled' : ''} ${this.checkedQuizzes[quiz.id] ? '' : 'style="display:none"'}>
             다음 <i class="bi bi-chevron-right"></i>
           </button>
-          <button class="btn btn-sm btn-primary ms-2" id="checkAnswerBtn">정답 확인</button>
+          <button class="btn btn-sm btn-primary ms-2" id="checkAnswerBtn" ${this.checkedQuizzes[quiz.id] ? 'style="display:none"' : ''}>정답 확인</button>
         </div>
         <div class="chatbot-quiz-result mt-2" id="quizResult" style="display: none;"></div>
       </div>
@@ -519,6 +520,13 @@ const Chat = {
 
     resultEl.innerHTML = html;
     resultEl.style.display = 'block';
+
+    // 정답 확인 후 다음 버튼 표시
+    this.checkedQuizzes[quiz.id] = true;
+    const nextBtn = document.getElementById('nextQuizBtn');
+    const checkBtn = document.getElementById('checkAnswerBtn');
+    if (nextBtn && this.currentQuizIndex < this.quizzes.length - 1) nextBtn.style.display = '';
+    if (checkBtn) checkBtn.style.display = 'none';
   },
 
   /**

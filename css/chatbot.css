@@ -652,9 +652,9 @@
   font-size: 0.8rem;
   font-weight: 600;
   border-radius: 12px;
-  background: white;
-  border: 1px solid var(--chatbot-border);
-  color: var(--chatbot-text);
+  background: var(--chatbot-primary);
+  border: none;
+  color: white;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge {

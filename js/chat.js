@@ -63,7 +63,7 @@ const Chat = {
 
     // 빈 AI 메시지 DOM 생성 (스트리밍으로 채워짐)
     const messageEl = document.createElement('div');
-    messageEl.className = 'chatbot-msg chatbot-msg--assistant';
+    messageEl.className = 'chatbot-msg chatbot-msg--assistant chatbot-msg--typing';
     const contentEl = document.createElement('div');
     contentEl.className = 'chatbot-msg-content';
     contentEl.innerHTML = '<span class="chatbot-typing-dot"></span><span class="chatbot-typing-dot"></span><span class="chatbot-typing-dot"></span>';
@@ -81,6 +81,7 @@ const Chat = {
       (token) => {
         if (!streaming) {
           streaming = true;
+          messageEl.classList.remove('chatbot-msg--typing');
           contentEl.textContent = '';
         }
         fullText += token;

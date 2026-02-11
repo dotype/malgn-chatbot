@@ -132,7 +132,7 @@ export class ChatManager {
 
       // 빈 AI 메시지 DOM 생성 (스트리밍으로 채워짐)
       const el = document.createElement('div');
-      el.className = 'chatbot-msg chatbot-msg--assistant';
+      el.className = 'chatbot-msg chatbot-msg--assistant chatbot-msg--typing';
       const contentEl = document.createElement('div');
       contentEl.className = 'chatbot-msg-content';
       contentEl.innerHTML = '<span class="chatbot-typing-dot"></span><span class="chatbot-typing-dot"></span><span class="chatbot-typing-dot"></span>';
@@ -151,6 +151,7 @@ export class ChatManager {
         (token) => {
           if (!streaming) {
             streaming = true;
+            el.classList.remove('chatbot-msg--typing');
             contentEl.textContent = '';
           }
           fullText += token;

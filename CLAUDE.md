@@ -99,7 +99,8 @@ malgn-chatbot-user2/    ← user2 테넌트 프론트엔드 배포본
 ├── migrations/
 │   ├── 001_quiz_content_based.sql    # TB_QUIZ 콘텐츠 기반 리팩토링
 │   ├── 002_session_course_fields.sql # course_id, course_user_id, lesson_id 추가
-│   └── 003_session_parent_id.sql     # parent_id 추가 (부모-자식 세션)
+│   ├── 003_session_parent_id.sql     # parent_id 추가 (부모-자식 세션)
+│   └── 004_content_lesson_id.sql     # TB_CONTENT에 lesson_id 추가
 ├── schema.sql                  # 전체 DB 스키마
 ├── wrangler.toml               # 멀티테넌트 Cloudflare 설정
 └── package.json                # hono, @hono/swagger-ui, jose, pdf-parse, unpdf
@@ -109,7 +110,7 @@ malgn-chatbot-user2/    ← user2 테넌트 프론트엔드 배포본
 
 | 테이블 | 설명 | 주요 컬럼 |
 |--------|------|-----------|
-| **TB_CONTENT** | 학습 자료 | `id`, `content_nm`, `filename`, `file_type`, `file_size`(INTEGER), `content`(전문), `status` |
+| **TB_CONTENT** | 학습 자료 | `id`, `content_nm`, `filename`, `file_type`, `file_size`(INTEGER), `content`(전문), `lesson_id`(LMS 차시), `status` |
 | **TB_SESSION** | 채팅 세션 | `id`, `parent_id`(기본0), `session_nm`, `persona`, `temperature`, `top_p`, `max_tokens`, `summary_count`, `recommend_count`, `quiz_count`, `learning_goal`, `learning_summary`(JSON), `recommended_questions`(JSON), `course_id`, `course_user_id`, `lesson_id`, `user_id` |
 | **TB_MESSAGE** | 채팅 메시지 | `id`, `session_id`(FK), `user_id`, `role`(user/assistant), `content` |
 | **TB_SESSION_CONTENT** | 세션-콘텐츠 매핑 | `session_id`(FK), `content_id`(FK), UNIQUE(session_id, content_id) 제약 |

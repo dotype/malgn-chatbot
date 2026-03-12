@@ -10,8 +10,8 @@
     "esbuild": "0.27.2"
   },
   "scripts": {
-    "build": "esbuild js/embed/index.js --bundle --format=iife --outfile=js/chatbot-embed.js --minify",
-    "watch": "esbuild js/embed/index.js --bundle --format=iife --outfile=js/chatbot-embed.js --watch"
+    "build": "esbuild js/embed/index.js --bundle --format=iife --outfile=js/chatbot-embed.js --minify --loader:.css=text",
+    "watch": "esbuild js/embed/index.js --bundle --format=iife --outfile=js/chatbot-embed.js --watch --loader:.css=text"
   },
   "repository": {
     "type": "git",

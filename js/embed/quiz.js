@@ -1,11 +1,14 @@
 /**
  * QuizManager - 퀴즈 로딩/렌더링/네비게이션/채점
+ *
+ * Shadow DOM root를 통해 DOM 쿼리를 수행합니다.
  */
 import { escapeHtml } from './utils.js';
 
 export class QuizManager {
-  constructor(api) {
+  constructor(api, root) {
     this.api = api;
+    this.root = root; // Shadow root
     this.quizzes = [];
     this.currentIndex = 0;
     this.answers = {};
@@ -17,7 +20,7 @@ export class QuizManager {
    * 퀴즈 로드
    */
   async loadQuizzes(sessionId) {
-    const quizEl = document.getElementById('malgn-quiz-text');
+    const quizEl = this.root.querySelector('#malgn-quiz-text');
     if (!quizEl) return;
 
     try {
@@ -42,7 +45,7 @@ export class QuizManager {
    * 현재 퀴즈 렌더링
    */
   renderCurrentQuiz() {
-    const quizEl = document.getElementById('malgn-quiz-text');
+    const quizEl = this.root.querySelector('#malgn-quiz-text');
     if (!quizEl || this.quizzes.length === 0) return;
 
     const quiz = this.quizzes[this.currentIndex];
@@ -113,9 +116,9 @@ export class QuizManager {
       });
     });
 
-    const prevBtn = document.getElementById('malgn-prev-quiz');
-    const nextBtn = document.getElementById('malgn-next-quiz');
-    const checkBtn = document.getElementById('malgn-check-answer');
+    const prevBtn = this.root.querySelector('#malgn-prev-quiz');
+    const nextBtn = this.root.querySelector('#malgn-next-quiz');
+    const checkBtn = this.root.querySelector('#malgn-check-answer');
 
     if (prevBtn) prevBtn.addEventListener('click', () => this.prev());
     if (nextBtn) nextBtn.addEventListener('click', () => this.next());
@@ -142,7 +145,7 @@ export class QuizManager {
   checkAnswer() {
     const quiz = this.quizzes[this.currentIndex];
     const userAnswer = this.answers[quiz.id];
-    const resultEl = document.getElementById('malgn-quiz-result');
+    const resultEl = this.root.querySelector('#malgn-quiz-result');
     if (!resultEl) return;
 
     if (!userAnswer) {
@@ -185,8 +188,8 @@ export class QuizManager {
     // 정답이거나 2번째 시도 → 다음 버튼 표시
     if (isCorrect || attempt >= 2) {
       this.checked[quiz.id] = true;
-      const nextBtn = document.getElementById('malgn-next-quiz');
-      const checkBtn = document.getElementById('malgn-check-answer');
+      const nextBtn = this.root.querySelector('#malgn-next-quiz');
+      const checkBtn = this.root.querySelector('#malgn-check-answer');
       if (nextBtn && this.currentIndex < this.quizzes.length - 1) nextBtn.style.display = '';
       if (checkBtn) checkBtn.style.display = 'none';
     }

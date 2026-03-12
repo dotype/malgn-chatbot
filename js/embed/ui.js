@@ -1,26 +1,51 @@
 /**
- * UI Module - DOM 생성 및 주입
+ * UI Module - DOM 생성 및 Shadow DOM 주입
  *
- * 호스트 페이지에 챗봇 위젯 HTML을 동적 생성합니다.
- * ID에 malgn- 접두어를 사용하여 충돌 방지.
+ * Shadow DOM을 사용하여 호스트 페이지 CSS로부터 완전 격리합니다.
+ * CSS는 번들에 인라인되므로 별도 <link> 없이 스크립트 하나로 동작.
  *
  * 모드:
  * - layer (기본): 플로팅 팝업 + FAB 버튼
  * - inline: 지정된 컨테이너 안에 배치
  */
 
+import chatbotCSS from '../../css/chatbot.css';
+
 export const UI = {
   chatbot: null,
   fab: null,
+  root: null, // Shadow root reference (모든 모듈이 DOM 쿼리 시 사용)
   isInline: false,
 
   /**
-   * 채팅 위젯 HTML 주입
+   * 채팅 위젯 HTML 주입 (Shadow DOM)
    */
   inject(config) {
     const width = config.width || 380;
     const height = config.height || 650;
     this.isInline = config.mode === 'inline';
+
+    // Shadow DOM 호스트 엘리먼트
+    const host = document.createElement('div');
+    host.id = 'malgn-tutor-host';
+    if (this.isInline) {
+      host.style.cssText = 'display:block;width:100%;height:100%;';
+    }
+
+    // Shadow Root 생성
+    const shadow = host.attachShadow({ mode: 'open' });
+    this.root = shadow;
+
+    // CSS 주입 (인라인 스타일)
+    const style = document.createElement('style');
+    style.textContent = chatbotCSS;
+    shadow.appendChild(style);
+
+    // Bootstrap Icons CDN (Shadow DOM 내부)
+    const iconsLink = document.createElement('link');
+    iconsLink.rel = 'stylesheet';
+    iconsLink.href = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css';
+    shadow.appendChild(iconsLink);
 
     // 레이어 모드: FAB 버튼 생성
     if (!this.isInline) {
@@ -32,7 +57,7 @@ export const UI = {
         <i class="bi bi-chat-dots-fill chat-fab-icon"></i>
         <i class="bi bi-x-lg chat-fab-close"></i>
       `;
-      document.body.appendChild(fab);
+      shadow.appendChild(fab);
       this.fab = fab;
     }
 
@@ -118,19 +143,21 @@ export const UI = {
       </div>
     `;
 
-    // 인라인 모드: 지정된 컨테이너에 삽입
+    shadow.appendChild(chatbot);
+
+    // 호스트 엘리먼트를 DOM에 삽입
     if (this.isInline && config.container) {
       const target = typeof config.container === 'string'
         ? document.querySelector(config.container)
         : config.container;
       if (target) {
-        target.appendChild(chatbot);
+        target.appendChild(host);
       } else {
         console.error('[MalgnTutor] Container not found:', config.container);
-        document.body.appendChild(chatbot);
+        document.body.appendChild(host);
       }
     } else {
-      document.body.appendChild(chatbot);
+      document.body.appendChild(host);
     }
 
     this.chatbot = chatbot;

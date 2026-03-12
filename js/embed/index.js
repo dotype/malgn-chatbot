@@ -1,7 +1,8 @@
 /**
  * AI 튜터 맑은샘 - 임베드 위젯 엔트리 포인트
  *
- * window.MalgnTutor 설정을 읽어 채팅 위젯을 자동 생성합니다.
+ * Shadow DOM을 사용하여 호스트 페이지 CSS로부터 완전 격리됩니다.
+ * CSS가 JS 번들에 인라인되므로 별도 <link> 태그 없이 스크립트 하나로 동작합니다.
  *
  * 사용법 (레이어 모드 - 기본):
  * <script>
@@ -16,6 +17,7 @@
  *   height: 650
  * };
  * </script>
+ * <script src="https://malgn-chatbot.pages.dev/js/chatbot-embed.js"></script>
  *
  * 사용법 (인라인 모드):
  * <div id="chatbot-area" style="width:100%; height:600px;"></div>
@@ -30,8 +32,6 @@
  *   settings: { ... }
  * };
  * </script>
- *
- * <link rel="stylesheet" href="https://malgn-chatbot.pages.dev/css/chatbot.css">
  * <script src="https://malgn-chatbot.pages.dev/js/chatbot-embed.js"></script>
  */
 
@@ -57,7 +57,7 @@ if (window.__malgnTutorLoaded) {
 
     const isInline = cfg.mode === 'inline';
 
-    // Bootstrap Icons CDN 주입 (없으면)
+    // Bootstrap Icons CDN - 메인 문서에도 로드 (@font-face 등록 보장)
     if (!document.querySelector('link[href*="bootstrap-icons"]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -68,7 +68,7 @@ if (window.__malgnTutorLoaded) {
     // API 클라이언트
     const api = new Api(cfg.apiUrl, cfg.apiKey);
 
-    // UI 주입
+    // UI 주입 (Shadow DOM 생성)
     UI.inject({
       mode: cfg.mode || 'layer',
       container: cfg.container || null,
@@ -78,12 +78,15 @@ if (window.__malgnTutorLoaded) {
       height: cfg.height || 650
     });
 
+    // Shadow root 참조 (모든 모듈이 DOM 쿼리 시 사용)
+    const root = UI.root;
+
     // Tab 매니저
-    const tabManager = new TabManager();
+    const tabManager = new TabManager(root);
     tabManager.init();
 
     // Quiz 매니저
-    const quizManager = new QuizManager(api);
+    const quizManager = new QuizManager(api, root);
 
     // Chat 매니저
     const chatManager = new ChatManager(api, {
@@ -94,7 +97,7 @@ if (window.__malgnTutorLoaded) {
       userId: cfg.userId || 0,
       settings: cfg.settings || {},
       parentSessionId: cfg.parentSessionId || 0
-    });
+    }, root);
     chatManager.init();
 
     // 세션 생성 시작 → FAB 로딩 표시
@@ -146,9 +149,9 @@ if (window.__malgnTutorLoaded) {
 
     // 레이어 모드: FAB 토글 + 닫기 버튼 이벤트
     if (!isInline) {
-      document.getElementById('malgn-fab').addEventListener('click', () => UI.toggle());
+      root.querySelector('#malgn-fab').addEventListener('click', () => UI.toggle());
 
-      const closeBtn = document.getElementById('malgn-close');
+      const closeBtn = root.querySelector('#malgn-close');
       if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -158,7 +161,7 @@ if (window.__malgnTutorLoaded) {
       }
     }
 
-    console.log(`[MalgnTutor] Initialized (${isInline ? 'inline' : 'layer'} mode).`);
+    console.log(`[MalgnTutor] Initialized (${isInline ? 'inline' : 'layer'} mode, Shadow DOM).`);
   }
 
   // DOMContentLoaded 또는 즉시 실행

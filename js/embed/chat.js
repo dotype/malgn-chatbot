@@ -1,14 +1,16 @@
 /**
  * ChatManager - 핵심 채팅 로직
  *
+ * Shadow DOM root를 통해 DOM 쿼리를 수행합니다.
  * 자동 세션 생성: 첫 메시지 전송 시 세션을 생성합니다.
  */
 import { escapeHtml, formatContent } from './utils.js';
 
 export class ChatManager {
-  constructor(api, config) {
+  constructor(api, config, root) {
     this.api = api;
     this.config = config;
+    this.root = root; // Shadow root
     this.sessionId = null;
     this.isLoading = false;
 
@@ -21,9 +23,9 @@ export class ChatManager {
    * 초기화 - 이벤트 바인딩
    */
   init() {
-    this.messagesEl = document.getElementById('malgn-messages');
-    this.inputEl = document.getElementById('malgn-input');
-    this.sendBtn = document.getElementById('malgn-send');
+    this.messagesEl = this.root.querySelector('#malgn-messages');
+    this.inputEl = this.root.querySelector('#malgn-input');
+    this.sendBtn = this.root.querySelector('#malgn-send');
 
     // 전송 버튼 클릭
     this.sendBtn.addEventListener('click', () => this.sendMessage());
@@ -207,7 +209,7 @@ export class ChatManager {
    * 타이핑 인디케이터 추가
    */
   addTypingIndicator() {
-    if (document.getElementById('malgn-typing')) return;
+    if (this.root.querySelector('#malgn-typing')) return;
 
     const el = document.createElement('div');
     el.id = 'malgn-typing';
@@ -227,7 +229,7 @@ export class ChatManager {
    * 타이핑 인디케이터 제거
    */
   removeTypingIndicator() {
-    const el = document.getElementById('malgn-typing');
+    const el = this.root.querySelector('#malgn-typing');
     if (el) el.remove();
   }
 
@@ -246,7 +248,7 @@ export class ChatManager {
    */
   scrollToBottom() {
     requestAnimationFrame(() => {
-      const body = document.getElementById('malgn-body');
+      const body = this.root.querySelector('#malgn-body');
       if (body) body.scrollTop = body.scrollHeight;
     });
   }

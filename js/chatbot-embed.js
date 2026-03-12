@@ -1,4 +1,4 @@
-(()=>{var p=(c,t)=>()=>(c&&(t=c(c=0)),t);var B=(c,t)=>()=>(t||c((t={exports:{}}).exports,t),t.exports);var y,S=p(()=>{y=class{constructor(t,e){this.baseUrl=t,this.apiKey=e}getHeaders(t=!0){let e={};return this.apiKey&&(e.Authorization=`Bearer ${this.apiKey}`),t&&(e["Content-Type"]="application/json"),e}async handleResponse(t){if(t.status===401)throw new Error("API Key\uAC00 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");if(!t.ok){let e=await t.json().catch(()=>({}));throw new Error(e.error?.message||"\uC694\uCCAD \uC2E4\uD328")}return t.json()}async createSession(t,e={}){let o={content_ids:t};e.courseId&&(o.course_id=e.courseId),e.courseUserId&&(o.course_user_id=e.courseUserId),e.lessonId&&(o.lesson_id=e.lessonId),e.userId&&(o.user_id=e.userId),e.settings&&(o.settings=e.settings),e.parentSessionId&&(o.parent_id=e.parentSessionId);let a=await fetch(`${this.baseUrl}/sessions`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify(o)});return this.handleResponse(a)}async getSession(t){let e=await fetch(`${this.baseUrl}/sessions/${t}`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}async sendMessage(t,e,o={}){let a=await fetch(`${this.baseUrl}/chat`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});return this.handleResponse(a)}async sendMessageStream(t,e,o={},a,s,r){try{let i=await fetch(`${this.baseUrl}/chat/stream`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});if(!i.ok){let b=await i.json().catch(()=>({}));r&&r(new Error(b.error?.message||"\uC2A4\uD2B8\uB9AC\uBC0D \uC694\uCCAD \uC2E4\uD328"));return}let n=i.body.pipeThrough(new TextDecoderStream).getReader(),d="",h="";for(;;){let{done:b,value:u}=await n.read();if(b)break;d+=u;let f=d.split(`
+(()=>{var p=(c,t)=>()=>(c&&(t=c(c=0)),t);var B=(c,t)=>()=>(t||c((t={exports:{}}).exports,t),t.exports);var y,S=p(()=>{y=class{constructor(t,e){this.baseUrl=t,this.apiKey=e}getHeaders(t=!0){let e={};return this.apiKey&&(e.Authorization=`Bearer ${this.apiKey}`),t&&(e["Content-Type"]="application/json"),e}async handleResponse(t){if(t.status===401)throw new Error("API Key\uAC00 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");if(!t.ok){let e=await t.json().catch(()=>({}));throw new Error(e.error?.message||"\uC694\uCCAD \uC2E4\uD328")}return t.json()}async createSession(t,e={}){let o={content_ids:t};e.courseId&&(o.course_id=e.courseId),e.courseUserId&&(o.course_user_id=e.courseUserId),e.lessonId&&(o.lesson_id=e.lessonId),e.userId&&(o.user_id=e.userId),e.settings&&(o.settings=e.settings),e.parentSessionId&&(o.parent_id=e.parentSessionId);let a=await fetch(`${this.baseUrl}/sessions`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify(o)});return this.handleResponse(a)}async getSession(t){let e=await fetch(`${this.baseUrl}/sessions/${t}`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}async sendMessage(t,e,o={}){let a=await fetch(`${this.baseUrl}/chat`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});return this.handleResponse(a)}async sendMessageStream(t,e,o={},a,s,r){try{let i=await fetch(`${this.baseUrl}/chat/stream`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});if(!i.ok){let b=await i.json().catch(()=>({}));r&&r(new Error(b.error?.message||"\uC2A4\uD2B8\uB9AC\uBC0D \uC694\uCCAD \uC2E4\uD328"));return}let n=i.body.pipeThrough(new TextDecoderStream).getReader(),d="",h="";for(;;){let{done:b,value:g}=await n.read();if(b)break;d+=g;let f=d.split(`
 `);d=f.pop()||"";for(let F of f){let m=F.trim();if(m){if(m.startsWith("event: "))h=m.slice(7);else if(m.startsWith("data: "))try{let x=JSON.parse(m.slice(6));h==="token"&&x.response&&a?a(x.response):h==="done"&&s?s(x):h==="error"&&r&&r(new Error(x.message))}catch{}}}}}catch(i){r&&r(i)}}async getQuizzes(t){let e=await fetch(`${this.baseUrl}/sessions/${t}/quizzes`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}}});var I,C=p(()=>{I=`/* ============================================
    Chatbot Widget - Standalone CSS
    Purple Theme (AI \uD29C\uD130 \uB9D1\uC740\uC0D8)
@@ -721,32 +721,34 @@
 .chatbot-quiz-progress .chatbot-quiz-count {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 0.8rem;
   font-weight: 600;
-  border-radius: 12px;
-  background: white;
-  border: 1px solid var(--chatbot-border);
-  color: var(--chatbot-text);
+  border-radius: 8px;
+  background: var(--chatbot-text);
+  border: none;
+  color: white;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge.choice {
-  background: #FEF3C7;
-  color: #92400E;
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #6EE7B7;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge.ox {
-  background: #FCE7F3;
-  color: #9D174D;
+  background: #FEF3C7;
+  color: #D97706;
+  border: 1px solid #FCD34D;
 }
 
 .chatbot-quiz-question {
@@ -790,15 +792,16 @@
 
 .chatbot-quiz-option .chatbot-option-num {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   align-items: center;
   justify-content: center;
-  background: var(--chatbot-bg-alt);
-  color: var(--chatbot-text);
-  border-radius: 6px;
+  background: #ECFDF5;
+  color: #059669;
+  border: 1.5px solid #6EE7B7;
+  border-radius: 8px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-right: 12px;
   flex-shrink: 0;
 }
@@ -806,6 +809,7 @@
 .chatbot-quiz-option.selected .chatbot-option-num {
   background: var(--chatbot-primary);
   color: white;
+  border-color: var(--chatbot-primary);
 }
 
 .chatbot-quiz-ox-options {
@@ -902,12 +906,12 @@
 .chatbot-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border-radius: 6px;
-  border: 1px solid transparent;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -936,8 +940,8 @@
 
 .chatbot-btn-outline:hover:not(:disabled) {
   background: var(--chatbot-bg-alt);
-  border-color: var(--chatbot-primary);
-  color: var(--chatbot-primary);
+  border-color: var(--chatbot-text);
+  color: var(--chatbot-text);
 }
 
 /* Badges */
@@ -1060,7 +1064,7 @@
 /* Text colors */
 .chatbot .text-success { color: #059669 !important; }
 .chatbot .text-danger { color: #DC2626 !important; }
-`});var g,E=p(()=>{C();g={chatbot:null,fab:null,root:null,isInline:!1,inject(c){let t=c.width||380,e=c.height||650;this.isInline=c.mode==="inline";let o=document.createElement("div");o.id="malgn-tutor-host",this.isInline&&(o.style.cssText="display:block;width:100%;height:100%;");let a=o.attachShadow({mode:"open"});this.root=a;let s=document.createElement("style");s.textContent=I,a.appendChild(s);let r=document.createElement("link");if(r.rel="stylesheet",r.href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css",a.appendChild(r),!this.isInline){let n=document.createElement("button");n.id="malgn-fab",n.className="chat-fab",n.title="\uCC44\uD305 \uC5F4\uAE30",n.innerHTML=`
+`});var u,E=p(()=>{C();u={chatbot:null,fab:null,root:null,isInline:!1,inject(c){let t=c.width||380,e=c.height||650;this.isInline=c.mode==="inline";let o=document.createElement("div");o.id="malgn-tutor-host",this.isInline&&(o.style.cssText="display:block;width:100%;height:100%;");let a=o.attachShadow({mode:"open"});this.root=a;let s=document.createElement("style");s.textContent=I,a.appendChild(s);let r=document.createElement("link");if(r.rel="stylesheet",r.href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css",a.appendChild(r),!this.isInline){let n=document.createElement("button");n.id="malgn-fab",n.className="chat-fab",n.title="\uCC44\uD305 \uC5F4\uAE30",n.innerHTML=`
         <i class="bi bi-chat-dots-fill chat-fab-icon"></i>
         <i class="bi bi-x-lg chat-fab-close"></i>
       `,a.appendChild(n),this.fab=n}let i=document.createElement("div");if(i.id="malgn-chatbot",this.isInline?i.className="chatbot chatbot--inline":(i.className="chatbot",i.hidden=!0,i.style.width=t+"px",i.style.height=e+"px"),i.innerHTML=`
@@ -1152,9 +1156,9 @@
           <strong>Q${a}.</strong> ${l(e.question)}
         </div>
         <div class="chatbot-quiz-options">
-    `;if(s)e.options.forEach((h,b)=>{let u=b+1,f=this.answers[e.id]===String(u);r+=`
-          <div class="chatbot-quiz-option ${f?"selected":""}" data-quiz-id="${e.id}" data-answer="${u}">
-            <span class="chatbot-option-num">${u}</span>
+    `;if(s)e.options.forEach((h,b)=>{let g=b+1,f=this.answers[e.id]===String(g);r+=`
+          <div class="chatbot-quiz-option ${f?"selected":""}" data-quiz-id="${e.id}" data-answer="${g}">
+            <span class="chatbot-option-num">${g}</span>
             <span>${l(h)}</span>
           </div>
         `});else{let h=this.answers[e.id]==="O",b=this.answers[e.id]==="X";r+=`
@@ -1181,4 +1185,4 @@
       <div class="${r}">
         <i class="bi ${i} chatbot-result-icon"></i>${n}
       </div>
-    `;if(!s&&a===1&&(d+='<div class="chatbot-result-explanation">\uB2E4\uC2DC \uD55C \uBC88 \uB3C4\uC804\uD574 \uBCF4\uC138\uC694!</div>'),(s||a>=2)&&t.explanation&&(d+=`<div class="chatbot-result-explanation"><strong>\uD574\uC124:</strong> ${l(t.explanation)}</div>`),o.innerHTML=d,o.style.display="block",s||a>=2){this.checked[t.id]=!0;let h=this.root.querySelector("#malgn-next-quiz"),b=this.root.querySelector("#malgn-check-answer");h&&this.currentIndex<this.quizzes.length-1&&(h.style.display=""),b&&(b.style.display="none")}}}});var A=B(()=>{S();E();L();T();M();if(window.__malgnTutorLoaded)console.warn("[MalgnTutor] Already loaded, skipping.");else{let c=function(){let t=window.MalgnTutor;if(!t||!t.apiUrl){console.error("[MalgnTutor] window.MalgnTutor.apiUrl is required.");return}let e=t.mode==="inline";if(!document.querySelector('link[href*="bootstrap-icons"]')){let n=document.createElement("link");n.rel="stylesheet",n.href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css",document.head.appendChild(n)}let o=new y(t.apiUrl,t.apiKey);g.inject({mode:t.mode||"layer",container:t.container||null,title:t.title||"",videoIframeId:t.videoIframeId||"",width:t.width||380,height:t.height||650});let a=g.root,s=new q(a);s.init();let r=new k(o,a),i=new z(o,{contentIds:t.contentIds||[],courseId:t.courseId||0,courseUserId:t.courseUserId||0,lessonId:t.lessonId||0,userId:t.userId||0,settings:t.settings||{},parentSessionId:t.parentSessionId||0},a);if(i.init(),i.onSessionCreating=()=>{g.setFabLoading(!0)},i.onSessionCreated=n=>{g.setFabLoading(!1),n.learning&&s.renderLearningData(n.learning),n.session&&n.session.id&&r.loadQuizzes(n.session.id),n.messages&&n.messages.length>0&&(i.clearMessages(),n.messages.forEach(d=>{d.role==="user"?i.addUserMessage(d.content):i.addAssistantMessage(d.content)}))},i.onSessionLoaded=n=>{n.learning&&s.renderLearningData(n.learning),n.id&&r.loadQuizzes(n.id)},s.onQuestionClick=n=>{i.sendMessage(n)},t.sessionId&&i.loadSession(t.sessionId),!e){a.querySelector("#malgn-fab").addEventListener("click",()=>g.toggle());let n=a.querySelector("#malgn-close");n&&n.addEventListener("click",d=>{d.preventDefault(),d.stopPropagation(),g.close()})}console.log(`[MalgnTutor] Initialized (${e?"inline":"layer"} mode, Shadow DOM).`)};window.__malgnTutorLoaded=!0,document.readyState==="loading"?document.addEventListener("DOMContentLoaded",c):c()}});A();})();
+    `;if(!s&&a===1&&(d+='<div class="chatbot-result-explanation">\uB2E4\uC2DC \uD55C \uBC88 \uB3C4\uC804\uD574 \uBCF4\uC138\uC694!</div>'),(s||a>=2)&&t.explanation&&(d+=`<div class="chatbot-result-explanation"><strong>\uD574\uC124:</strong> ${l(t.explanation)}</div>`),o.innerHTML=d,o.style.display="block",s||a>=2){this.checked[t.id]=!0;let h=this.root.querySelector("#malgn-next-quiz"),b=this.root.querySelector("#malgn-check-answer");h&&this.currentIndex<this.quizzes.length-1&&(h.style.display=""),b&&(b.style.display="none")}}}});var A=B(()=>{S();E();L();T();M();if(window.__malgnTutorLoaded)console.warn("[MalgnTutor] Already loaded, skipping.");else{let c=function(){let t=window.MalgnTutor;if(!t||!t.apiUrl){console.error("[MalgnTutor] window.MalgnTutor.apiUrl is required.");return}let e=t.mode==="inline";if(!document.querySelector('link[href*="bootstrap-icons"]')){let n=document.createElement("link");n.rel="stylesheet",n.href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css",document.head.appendChild(n)}let o=new y(t.apiUrl,t.apiKey);u.inject({mode:t.mode||"layer",container:t.container||null,title:t.title||"",videoIframeId:t.videoIframeId||"",width:t.width||380,height:t.height||650});let a=u.root,s=new q(a);s.init();let r=new k(o,a),i=new z(o,{contentIds:t.contentIds||[],courseId:t.courseId||0,courseUserId:t.courseUserId||0,lessonId:t.lessonId||0,userId:t.userId||0,settings:t.settings||{},parentSessionId:t.parentSessionId||0},a);if(i.init(),i.onSessionCreating=()=>{u.setFabLoading(!0)},i.onSessionCreated=n=>{u.setFabLoading(!1),n.learning&&s.renderLearningData(n.learning),n.session&&n.session.id&&r.loadQuizzes(n.session.id),n.messages&&n.messages.length>0&&(i.clearMessages(),n.messages.forEach(d=>{d.role==="user"?i.addUserMessage(d.content):i.addAssistantMessage(d.content)}))},i.onSessionLoaded=n=>{n.learning&&s.renderLearningData(n.learning),n.id&&r.loadQuizzes(n.id)},s.onQuestionClick=n=>{i.sendMessage(n)},t.sessionId&&i.loadSession(t.sessionId),!e){a.querySelector("#malgn-fab").addEventListener("click",()=>u.toggle());let n=a.querySelector("#malgn-close");n&&n.addEventListener("click",d=>{d.preventDefault(),d.stopPropagation(),u.close()})}console.log(`[MalgnTutor] Initialized (${e?"inline":"layer"} mode, Shadow DOM).`)};window.__malgnTutorLoaded=!0,document.readyState==="loading"?document.addEventListener("DOMContentLoaded",c):c()}});A();})();

@@ -720,32 +720,34 @@
 .chatbot-quiz-progress .chatbot-quiz-count {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 0.8rem;
   font-weight: 600;
-  border-radius: 12px;
-  background: white;
-  border: 1px solid var(--chatbot-border);
-  color: var(--chatbot-text);
+  border-radius: 8px;
+  background: var(--chatbot-text);
+  border: none;
+  color: white;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge.choice {
-  background: #FEF3C7;
-  color: #92400E;
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #6EE7B7;
 }
 
 .chatbot-quiz-progress .chatbot-quiz-type-badge.ox {
-  background: #FCE7F3;
-  color: #9D174D;
+  background: #FEF3C7;
+  color: #D97706;
+  border: 1px solid #FCD34D;
 }
 
 .chatbot-quiz-question {
@@ -789,15 +791,16 @@
 
 .chatbot-quiz-option .chatbot-option-num {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   align-items: center;
   justify-content: center;
-  background: var(--chatbot-bg-alt);
-  color: var(--chatbot-text);
-  border-radius: 6px;
+  background: #ECFDF5;
+  color: #059669;
+  border: 1.5px solid #6EE7B7;
+  border-radius: 8px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-right: 12px;
   flex-shrink: 0;
 }
@@ -805,6 +808,7 @@
 .chatbot-quiz-option.selected .chatbot-option-num {
   background: var(--chatbot-primary);
   color: white;
+  border-color: var(--chatbot-primary);
 }
 
 .chatbot-quiz-ox-options {
@@ -901,12 +905,12 @@
 .chatbot-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border-radius: 6px;
-  border: 1px solid transparent;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -935,8 +939,8 @@
 
 .chatbot-btn-outline:hover:not(:disabled) {
   background: var(--chatbot-bg-alt);
-  border-color: var(--chatbot-primary);
-  color: var(--chatbot-primary);
+  border-color: var(--chatbot-text);
+  color: var(--chatbot-text);
 }
 
 /* Badges */

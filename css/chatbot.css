@@ -1014,24 +1014,40 @@
 /* Recommend question (embed용) */
 .chatbot .chatbot-recommend-question {
   margin-bottom: 10px;
-  padding: 12px 14px;
-  background: white;
-  border: 1px solid var(--chatbot-border);
-  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(124, 58, 237, 0.04);
+  border: 1.5px solid var(--chatbot-primary-light);
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   line-height: 1.5;
 }
 
 .chatbot .chatbot-recommend-question:hover {
+  background: rgba(124, 58, 237, 0.08);
   border-color: var(--chatbot-primary);
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
 }
 
 .chatbot .chatbot-recommend-question:last-child {
   margin-bottom: 0;
+}
+
+.chatbot .chatbot-recommend-question .chatbot-badge {
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  background: var(--chatbot-primary);
+  color: white;
+  font-size: 0.8rem;
+}
+
+#malgn-tab-recommend h6,
+#malgn-tab-recommend h6 i {
+  color: var(--chatbot-primary);
 }
 
 /* Quiz spacing (embed용) */

@@ -142,10 +142,12 @@
 
 /* Tab Navigation */
 .chatbot .chatbot-tabs {
-  border-bottom: 1px solid var(--chatbot-border);
+  border-bottom: none;
   background-color: var(--chatbot-bg);
   display: flex;
   padding: 0;
+  margin: 0 16px;
+  border-bottom: 1px solid var(--chatbot-border);
 }
 
 .chatbot .chatbot-tab {
@@ -204,9 +206,10 @@
 /* Tab Content */
 .chatbot-content {
   flex: 0 0 auto;
-  background-color: var(--chatbot-bg-alt);
+  background-color: var(--chatbot-bg);
   border-bottom: 1px solid var(--chatbot-border);
   padding: 16px;
+  margin: 0 16px;
 }
 
 .chatbot-content h6 {

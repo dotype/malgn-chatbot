@@ -94,6 +94,7 @@ export class ChatManager {
         courseId: this.config.courseId,
         courseUserId: this.config.courseUserId,
         lessonId: this.config.lessonId,
+        userId: this.config.userId,
         settings: this.config.settings,
         parentSessionId: this.config.parentSessionId
       }

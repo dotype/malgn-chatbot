@@ -91,6 +91,7 @@ if (window.__malgnTutorLoaded) {
       courseId: cfg.courseId || 0,
       courseUserId: cfg.courseUserId || 0,
       lessonId: cfg.lessonId || 0,
+      userId: cfg.userId || 0,
       settings: cfg.settings || {},
       parentSessionId: cfg.parentSessionId || 0
     });

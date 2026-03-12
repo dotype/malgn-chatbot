@@ -45,6 +45,7 @@ export class Api {
     if (config.courseId) body.course_id = config.courseId;
     if (config.courseUserId) body.course_user_id = config.courseUserId;
     if (config.lessonId) body.lesson_id = config.lessonId;
+    if (config.userId) body.user_id = config.userId;
     if (config.settings) body.settings = config.settings;
     if (config.parentSessionId) body.parent_id = config.parentSessionId;
 

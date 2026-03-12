@@ -988,18 +988,27 @@
 
 /* Summary item (embed용) */
 .chatbot .chatbot-summary-item {
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  background: white;
-  border: 1px solid var(--chatbot-border);
-  border-radius: 10px;
-  line-height: 1.5;
+  margin-bottom: 6px;
+  padding: 8px 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  line-height: 1.6;
   display: flex;
   align-items: flex-start;
 }
 
 .chatbot .chatbot-summary-item:last-child {
   margin-bottom: 0;
+}
+
+.chatbot .chatbot-summary-item .chatbot-badge {
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-top: 2px;
 }
 
 /* Recommend question (embed용) */

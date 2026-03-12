@@ -1,5 +1,5 @@
-(()=>{var p=(c,t)=>()=>(c&&(t=c(c=0)),t);var B=(c,t)=>()=>(t||c((t={exports:{}}).exports,t),t.exports);var y,S=p(()=>{y=class{constructor(t,e){this.baseUrl=t,this.apiKey=e}getHeaders(t=!0){let e={};return this.apiKey&&(e.Authorization=`Bearer ${this.apiKey}`),t&&(e["Content-Type"]="application/json"),e}async handleResponse(t){if(t.status===401)throw new Error("API Key\uAC00 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");if(!t.ok){let e=await t.json().catch(()=>({}));throw new Error(e.error?.message||"\uC694\uCCAD \uC2E4\uD328")}return t.json()}async createSession(t,e={}){let o={content_ids:t};e.courseId&&(o.course_id=e.courseId),e.courseUserId&&(o.course_user_id=e.courseUserId),e.lessonId&&(o.lesson_id=e.lessonId),e.userId&&(o.user_id=e.userId),e.settings&&(o.settings=e.settings),e.parentSessionId&&(o.parent_id=e.parentSessionId);let a=await fetch(`${this.baseUrl}/sessions`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify(o)});return this.handleResponse(a)}async getSession(t){let e=await fetch(`${this.baseUrl}/sessions/${t}`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}async sendMessage(t,e,o={}){let a=await fetch(`${this.baseUrl}/chat`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});return this.handleResponse(a)}async sendMessageStream(t,e,o={},a,s,r){try{let i=await fetch(`${this.baseUrl}/chat/stream`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});if(!i.ok){let b=await i.json().catch(()=>({}));r&&r(new Error(b.error?.message||"\uC2A4\uD2B8\uB9AC\uBC0D \uC694\uCCAD \uC2E4\uD328"));return}let n=i.body.pipeThrough(new TextDecoderStream).getReader(),d="",l="";for(;;){let{done:b,value:g}=await n.read();if(b)break;d+=g;let x=d.split(`
-`);d=x.pop()||"";for(let F of x){let m=F.trim();if(m){if(m.startsWith("event: "))l=m.slice(7);else if(m.startsWith("data: "))try{let f=JSON.parse(m.slice(6));l==="token"&&f.response&&a?a(f.response):l==="done"&&s?s(f):l==="error"&&r&&r(new Error(f.message))}catch{}}}}}catch(i){r&&r(i)}}async getQuizzes(t){let e=await fetch(`${this.baseUrl}/sessions/${t}/quizzes`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}}});var I,C=p(()=>{I=`/* ============================================
+(()=>{var p=(c,t)=>()=>(c&&(t=c(c=0)),t);var B=(c,t)=>()=>(t||c((t={exports:{}}).exports,t),t.exports);var y,S=p(()=>{y=class{constructor(t,e){this.baseUrl=t,this.apiKey=e}getHeaders(t=!0){let e={};return this.apiKey&&(e.Authorization=`Bearer ${this.apiKey}`),t&&(e["Content-Type"]="application/json"),e}async handleResponse(t){if(t.status===401)throw new Error("API Key\uAC00 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");if(!t.ok){let e=await t.json().catch(()=>({}));throw new Error(e.error?.message||"\uC694\uCCAD \uC2E4\uD328")}return t.json()}async createSession(t,e={}){let o={content_ids:t};e.courseId&&(o.course_id=e.courseId),e.courseUserId&&(o.course_user_id=e.courseUserId),e.lessonId&&(o.lesson_id=e.lessonId),e.userId&&(o.user_id=e.userId),e.settings&&(o.settings=e.settings),e.parentSessionId&&(o.parent_id=e.parentSessionId);let a=await fetch(`${this.baseUrl}/sessions`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify(o)});return this.handleResponse(a)}async getSession(t){let e=await fetch(`${this.baseUrl}/sessions/${t}`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}async sendMessage(t,e,o={}){let a=await fetch(`${this.baseUrl}/chat`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});return this.handleResponse(a)}async sendMessageStream(t,e,o={},a,s,r){try{let i=await fetch(`${this.baseUrl}/chat/stream`,{method:"POST",headers:this.getHeaders(),body:JSON.stringify({message:t,sessionId:e,settings:o})});if(!i.ok){let b=await i.json().catch(()=>({}));r&&r(new Error(b.error?.message||"\uC2A4\uD2B8\uB9AC\uBC0D \uC694\uCCAD \uC2E4\uD328"));return}let n=i.body.pipeThrough(new TextDecoderStream).getReader(),d="",l="";for(;;){let{done:b,value:g}=await n.read();if(b)break;d+=g;let f=d.split(`
+`);d=f.pop()||"";for(let F of f){let m=F.trim();if(m){if(m.startsWith("event: "))l=m.slice(7);else if(m.startsWith("data: "))try{let x=JSON.parse(m.slice(6));l==="token"&&x.response&&a?a(x.response):l==="done"&&s?s(x):l==="error"&&r&&r(new Error(x.message))}catch{}}}}}catch(i){r&&r(i)}}async getQuizzes(t){let e=await fetch(`${this.baseUrl}/sessions/${t}/quizzes`,{headers:this.getHeaders(!1)});return this.handleResponse(e)}}});var I,C=p(()=>{I=`/* ============================================
    Chatbot Widget - Standalone CSS
    Purple Theme (AI \uD29C\uD130 \uB9D1\uC740\uC0D8)
 
@@ -104,7 +104,7 @@
 .chatbot .chatbot-header .chatbot-title {
   color: white;
   margin: 0;
-  font-size: 13px;
+  font-size: 0.95rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@
 }
 
 .chatbot .chatbot-header .chatbot-title-icon {
-  font-size: 15px;
+  font-size: 1.1rem;
 }
 
 /* Close Button */
@@ -212,7 +212,7 @@
 .chatbot-content h6 {
   color: var(--chatbot-text);
   margin: 0 0 12px 0;
-  font-size: 12px;
+  font-size: 0.875rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -231,7 +231,7 @@
   margin: 0;
   line-height: 1.6;
   color: var(--chatbot-text);
-  font-size: 13px;
+  font-size: 0.9rem;
 }
 
 .chatbot .tab-content {
@@ -705,7 +705,7 @@
    ============================================ */
 
 .chatbot-quiz {
-  font-size: 13px;
+  font-size: 0.9rem;
 }
 
 .chatbot-quiz-progress {
@@ -719,7 +719,7 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 0.8rem;
   font-weight: 600;
   border-radius: 12px;
   background: white;
@@ -731,7 +731,7 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 600;
   border-radius: 12px;
 }
@@ -751,7 +751,7 @@
   background: transparent;
   line-height: 1.6;
   margin-bottom: 16px;
-  font-size: 13px;
+  font-size: 0.95rem;
 }
 
 .chatbot-quiz-question strong {
@@ -794,7 +794,7 @@
   background: var(--chatbot-bg-alt);
   color: var(--chatbot-text);
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 0.8rem;
   font-weight: 600;
   margin-right: 12px;
   flex-shrink: 0;
@@ -818,7 +818,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: bold;
   border-radius: 12px;
   padding: 0;
@@ -856,7 +856,7 @@
 }
 
 .chatbot-quiz-result .chatbot-result-icon {
-  font-size: 14px;
+  font-size: 1rem;
   margin-right: 4px;
 }
 
@@ -876,7 +876,7 @@
 
 .chatbot-quiz-result .chatbot-result-explanation {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 0.85rem;
   color: var(--chatbot-text-secondary);
   line-height: 1.5;
 }
@@ -901,7 +901,7 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  font-size: 11px;
+  font-size: 0.8rem;
   font-weight: 500;
   border-radius: 6px;
   border: 1px solid transparent;
@@ -945,7 +945,7 @@
   min-width: 22px;
   height: 22px;
   padding: 0 8px;
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 600;
   border-radius: 11px;
   background: var(--chatbot-text-secondary);
@@ -982,7 +982,7 @@
 .chatbot .text-danger { color: #dc3545; }
 .chatbot .text-warning { color: #ffc107; }
 .chatbot .text-muted { color: #6c757d; }
-.chatbot .small { font-size: 12px; }
+.chatbot .small { font-size: 0.85em; }
 
 /* Summary item (embed\uC6A9) */
 .chatbot .chatbot-summary-item {
@@ -1124,8 +1124,8 @@
           <strong>Q${a}.</strong> ${h(e.question)}
         </div>
         <div class="chatbot-quiz-options">
-    `;if(s)e.options.forEach((l,b)=>{let g=b+1,x=this.answers[e.id]===String(g);r+=`
-          <div class="chatbot-quiz-option ${x?"selected":""}" data-quiz-id="${e.id}" data-answer="${g}">
+    `;if(s)e.options.forEach((l,b)=>{let g=b+1,f=this.answers[e.id]===String(g);r+=`
+          <div class="chatbot-quiz-option ${f?"selected":""}" data-quiz-id="${e.id}" data-answer="${g}">
             <span class="chatbot-option-num">${g}</span>
             <span>${h(l)}</span>
           </div>

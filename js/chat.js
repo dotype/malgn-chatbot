@@ -38,8 +38,20 @@ const Chat = {
       }
     });
 
+    // textarea 높이 자동 조절
+    this.chatInput.addEventListener('input', () => this.autoResize());
+
     // 입력창 포커스 시 최신 메시지가 보이도록 하단으로 스크롤
     this.chatInput.addEventListener('focus', () => this.scrollToBottom());
+  },
+
+  /**
+   * textarea 높이 자동 조절 (최대 5줄)
+   */
+  autoResize() {
+    this.chatInput.style.height = 'auto';
+    const maxHeight = parseInt(getComputedStyle(this.chatInput).lineHeight) * 5;
+    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, maxHeight) + 'px';
   },
 
   /**
@@ -57,6 +69,7 @@ const Chat = {
 
     // 입력창 초기화
     this.chatInput.value = '';
+    this.chatInput.style.height = 'auto';
 
     // 로딩 상태
     this.setLoading(true);
@@ -115,7 +128,7 @@ const Chat = {
     const messageEl = document.createElement('div');
     messageEl.className = 'chatbot-msg chatbot-msg--user';
     messageEl.innerHTML = `
-      <div class="chatbot-msg-content">${this.escapeHtml(content)}</div>
+      <div class="chatbot-msg-content">${this.escapeHtml(content).replace(/\n/g, '<br>')}</div>
     `;
 
     this.chatMessages.appendChild(messageEl);
@@ -219,10 +232,72 @@ const Chat = {
   },
 
   /**
-   * 콘텐츠 포맷팅 (줄바꿈 처리)
+   * 콘텐츠 포맷팅 (Markdown → HTML)
    */
   formatContent(content) {
-    return this.escapeHtml(content).replace(/\n/g, '<br>');
+    if (!content) return '';
+    const esc = this.escapeHtml.bind(this);
+
+    // 코드 블록 보호
+    const codeBlocks = [];
+    let text = content.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+      const idx = codeBlocks.length;
+      codeBlocks.push(`<pre class="chatbot-code-block"><code>${esc(code.trim())}</code></pre>`);
+      return `\x00CB${idx}\x00`;
+    });
+
+    // 인라인 코드 보호
+    const inlineCodes = [];
+    text = text.replace(/`([^`]+)`/g, (_, code) => {
+      const idx = inlineCodes.length;
+      inlineCodes.push(`<code class="chatbot-inline-code">${esc(code)}</code>`);
+      return `\x00IC${idx}\x00`;
+    });
+
+    const applyInline = (line) => line
+      .replace(/\*{3}(.+?)\*{3}/g, '<strong><em>$1</em></strong>')
+      .replace(/\*{2}(.+?)\*{2}/g, '<strong>$1</strong>')
+      .replace(/__(.+?)__/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    const lines = text.split('\n');
+    const result = [];
+    let inList = false, listType = null;
+
+    for (const line of lines) {
+      if (line.includes('\x00CB')) {
+        if (inList) { result.push(listType === 'ol' ? '</ol>' : '</ul>'); inList = false; }
+        result.push(line); continue;
+      }
+      if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(line.trim())) {
+        if (inList) { result.push(listType === 'ol' ? '</ol>' : '</ul>'); inList = false; }
+        result.push('<hr class="chatbot-hr">'); continue;
+      }
+      const hm = line.match(/^(#{1,4})\s+(.+)$/);
+      if (hm) {
+        if (inList) { result.push(listType === 'ol' ? '</ol>' : '</ul>'); inList = false; }
+        result.push(`<strong class="chatbot-h chatbot-h${hm[1].length}">${applyInline(esc(hm[2]))}</strong>`); continue;
+      }
+      const olm = line.match(/^(\d+)[.)]\s+(.+)$/);
+      if (olm) {
+        if (!inList || listType !== 'ol') { if (inList) result.push(listType === 'ol' ? '</ol>' : '</ul>'); result.push('<ol class="chatbot-list">'); inList = true; listType = 'ol'; }
+        result.push(`<li>${applyInline(esc(olm[2]))}</li>`); continue;
+      }
+      const ulm = line.match(/^[\-\*•]\s+(.+)$/);
+      if (ulm) {
+        if (!inList || listType !== 'ul') { if (inList) result.push(listType === 'ol' ? '</ol>' : '</ul>'); result.push('<ul class="chatbot-list">'); inList = true; listType = 'ul'; }
+        result.push(`<li>${applyInline(esc(ulm[1]))}</li>`); continue;
+      }
+      if (inList) { result.push(listType === 'ol' ? '</ol>' : '</ul>'); inList = false; }
+      if (line.trim() === '') { result.push('<br>'); continue; }
+      result.push(`<span>${applyInline(esc(line))}</span>`);
+    }
+    if (inList) result.push(listType === 'ol' ? '</ol>' : '</ul>');
+
+    let html = result.join('\n');
+    codeBlocks.forEach((b, i) => { html = html.replace(`\x00CB${i}\x00`, b); });
+    inlineCodes.forEach((c, i) => { html = html.replace(`\x00IC${i}\x00`, c); });
+    return html;
   },
 
   /**

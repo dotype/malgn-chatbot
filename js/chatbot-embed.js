@@ -1056,7 +1056,9 @@
 }
 
 #malgn-tab-recommend h6,
-#malgn-tab-recommend h6 i {
+#malgn-tab-recommend h6 i,
+#tab-recommend h6,
+#tab-recommend h6 i {
   color: var(--chatbot-primary);
 }
 

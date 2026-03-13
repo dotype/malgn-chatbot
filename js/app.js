@@ -217,6 +217,17 @@ const App = {
     document.querySelector(`.chatbot-tab[data-tab="${tabName}"]`).classList.add('active');
     document.getElementById(`tab-${tabName}`).classList.add('active');
 
+    // 퀴즈 탭: 채팅 영역(메시지 + 입력창) 숨김
+    const messagesEl = this.chatbot.querySelector('.chatbot-messages');
+    const footerEl = this.chatbot.querySelector('.chatbot-footer');
+    if (tabName === 'quiz') {
+      if (messagesEl) messagesEl.style.display = 'none';
+      if (footerEl) footerEl.style.display = 'none';
+    } else {
+      if (messagesEl) messagesEl.style.display = '';
+      if (footerEl) footerEl.style.display = '';
+    }
+
     // 탭 콘텐츠가 보이도록 상단으로 스크롤
     const chatbotBody = this.chatbot.querySelector('.chatbot-body');
     if (chatbotBody) chatbotBody.scrollTop = 0;

@@ -369,9 +369,9 @@
 
     <!-- Tabs -->
     <div class="chatbot-tabs">
-      <button class="chatbot-tab active" data-tab="goals">목표</button>
-      <button class="chatbot-tab" data-tab="summary">요약</button>
-      <button class="chatbot-tab" data-tab="recommend">추천</button>
+      <button class="chatbot-tab active" data-tab="goals">학습 목표</button>
+      <button class="chatbot-tab" data-tab="summary">학습 요약</button>
+      <button class="chatbot-tab" data-tab="recommend">추천 질문</button>
       <button class="chatbot-tab" data-tab="quiz">퀴즈</button>
     </div>
 
@@ -410,7 +410,7 @@
     <!-- Chat Input -->
     <div class="chatbot-footer">
       <form id="chatForm" style="display:contents;">
-        <input type="text" class="chatbot-input" id="chatInput" placeholder="메시지를 입력하세요...">
+        <textarea class="chatbot-input" id="chatInput" placeholder="메시지를 입력하세요..." rows="1"></textarea>
         <button type="submit" class="chatbot-send" id="sendBtn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>

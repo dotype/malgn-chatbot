@@ -202,7 +202,7 @@ export class ChatManager {
   addUserMessage(content) {
     const el = document.createElement('div');
     el.className = 'chatbot-msg chatbot-msg--user';
-    el.innerHTML = `<div class="chatbot-msg-content">${escapeHtml(content)}</div>`;
+    el.innerHTML = `<div class="chatbot-msg-content">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
     this.messagesEl.appendChild(el);
     this.scrollToBottom();
   }

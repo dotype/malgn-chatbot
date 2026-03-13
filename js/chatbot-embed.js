@@ -1081,9 +1081,9 @@
 
       <!-- Tabs -->
       <div class="chatbot-tabs">
-        <button class="chatbot-tab active" data-tab="goals">\uBAA9\uD45C</button>
-        <button class="chatbot-tab" data-tab="summary">\uC694\uC57D</button>
-        <button class="chatbot-tab" data-tab="recommend">\uCD94\uCC9C</button>
+        <button class="chatbot-tab active" data-tab="goals">\uD559\uC2B5 \uBAA9\uD45C</button>
+        <button class="chatbot-tab" data-tab="summary">\uD559\uC2B5 \uC694\uC57D</button>
+        <button class="chatbot-tab" data-tab="recommend">\uCD94\uCC9C \uC9C8\uBB38</button>
         <button class="chatbot-tab" data-tab="quiz">\uD034\uC988</button>
       </div>
 

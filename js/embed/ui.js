@@ -88,9 +88,9 @@ export const UI = {
 
       <!-- Tabs -->
       <div class="chatbot-tabs">
-        <button class="chatbot-tab active" data-tab="goals">목표</button>
-        <button class="chatbot-tab" data-tab="summary">요약</button>
-        <button class="chatbot-tab" data-tab="recommend">추천</button>
+        <button class="chatbot-tab active" data-tab="goals">학습 목표</button>
+        <button class="chatbot-tab" data-tab="summary">학습 요약</button>
+        <button class="chatbot-tab" data-tab="recommend">추천 질문</button>
         <button class="chatbot-tab" data-tab="quiz">퀴즈</button>
       </div>
 

@@ -81,9 +81,14 @@ export const UI = {
           <i class="bi bi-mortarboard-fill chatbot-title-icon"></i>
           ${config.title || 'AI 튜터 맑은샘'}
         </span>
-        <button class="chatbot-close" id="malgn-close">
-          <i class="bi bi-x-lg"></i>
-        </button>
+        <div class="chatbot-header-actions">
+          <button class="chatbot-header-btn" id="malgn-reset" title="대화 초기화">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+          <button class="chatbot-close" id="malgn-close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Tabs -->

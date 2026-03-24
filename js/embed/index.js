@@ -173,6 +173,18 @@ if (window.__malgnTutorLoaded) {
       }
     }
 
+    // 초기화 버튼 이벤트
+    const resetBtn = root.querySelector('#malgn-reset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('대화 내용을 모두 삭제하시겠습니까?')) return;
+        chatManager.clearMessages();
+        if (welcomeMessage) {
+          chatManager.addAssistantMessage(welcomeMessage);
+        }
+      });
+    }
+
     console.log(`[MalgnTutor] Initialized (${isInline ? 'inline' : 'layer'} mode, Shadow DOM).`);
   }
 

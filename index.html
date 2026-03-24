@@ -87,7 +87,7 @@
                     <span>응답 길이 (Max Tokens)</span>
                     <span class="badge bg-primary" id="maxTokensValue">1024</span>
                   </label>
-                  <input type="range" class="form-range" id="maxTokensSlider" min="256" max="4096" step="256" value="1024">
+                  <input type="range" class="form-range" id="maxTokensSlider" min="256" max="4096" step="256" value="256">
                   <div class="form-text">AI 응답의 최대 길이</div>
                 </div>
               </div>
@@ -376,9 +376,14 @@
         <i class="bi bi-mortarboard-fill chatbot-title-icon"></i>
         AI 튜터 맑은샘
       </span>
-      <button class="chatbot-close" id="chatbotClose">
-        <i class="bi bi-x-lg"></i>
-      </button>
+      <div class="chatbot-header-actions">
+        <button class="chatbot-header-btn" id="chatbotReset" title="대화 초기화">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
+        <button class="chatbot-close" id="chatbotClose">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
     </div>
 
     <!-- Tabs -->

@@ -177,7 +177,9 @@ export class ChatManager {
         },
         // onDone
         (data) => {
-          contentEl.innerHTML = formatContent(fullText);
+          // 서버에서 정제된 응답이 있으면 교체
+          const finalText = data?.sanitizedResponse || fullText;
+          contentEl.innerHTML = formatContent(finalText);
           this.scrollToBottom();
           this.setLoading(false);
         },

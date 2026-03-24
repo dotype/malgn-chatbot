@@ -16,3 +16,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# bkit / PDCA
+.bkit/
+.bkit-memory.json
+.pdca-snapshots/
+.pdca-status.json

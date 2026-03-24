@@ -70,6 +70,17 @@ const App = {
     this.closeChatBtn.addEventListener('click', () => this.closeChatbot());
     this.chatbotClose.addEventListener('click', () => this.closeChatbot());
 
+    // 대화 초기화
+    const chatbotReset = document.getElementById('chatbotReset');
+    if (chatbotReset) {
+      chatbotReset.addEventListener('click', () => {
+        if (!confirm('대화 내용을 모두 삭제하시겠습니까?')) return;
+        if (typeof Chat !== 'undefined') {
+          Chat.clearChat();
+        }
+      });
+    }
+
     // 플로팅 버튼 토글
     this.chatFab.addEventListener('click', () => this.toggleChatbot());
 

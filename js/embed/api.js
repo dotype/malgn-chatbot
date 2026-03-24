@@ -134,6 +134,17 @@ export class Api {
   }
 
   /**
+   * 세션 메시지 초기화 (soft delete)
+   */
+  async clearMessages(sessionId) {
+    const response = await fetch(`${this.baseUrl}/sessions/${sessionId}/messages`, {
+      method: 'DELETE',
+      headers: this.getHeaders(false)
+    });
+    return this.handleResponse(response);
+  }
+
+  /**
    * 세션 퀴즈 조회
    */
   async getQuizzes(sessionId) {

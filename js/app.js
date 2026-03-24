@@ -73,9 +73,16 @@ const App = {
     // 대화 초기화
     const chatbotReset = document.getElementById('chatbotReset');
     if (chatbotReset) {
-      chatbotReset.addEventListener('click', () => {
+      chatbotReset.addEventListener('click', async () => {
         if (!confirm('대화 내용을 모두 삭제하시겠습니까?')) return;
         if (typeof Chat !== 'undefined') {
+          if (Chat.sessionId && typeof Api !== 'undefined') {
+            try {
+              await Api.clearSessionMessages(Chat.sessionId);
+            } catch (e) {
+              console.error('메시지 초기화 실패:', e);
+            }
+          }
           Chat.clearChat();
         }
       });

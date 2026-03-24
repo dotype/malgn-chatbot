@@ -176,8 +176,15 @@ if (window.__malgnTutorLoaded) {
     // 초기화 버튼 이벤트
     const resetBtn = root.querySelector('#malgn-reset');
     if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
+      resetBtn.addEventListener('click', async () => {
         if (!confirm('대화 내용을 모두 삭제하시겠습니까?')) return;
+        if (chatManager.sessionId) {
+          try {
+            await api.clearMessages(chatManager.sessionId);
+          } catch (e) {
+            console.error('[MalgnTutor] 메시지 초기화 실패:', e);
+          }
+        }
         chatManager.clearMessages();
         if (welcomeMessage) {
           chatManager.addAssistantMessage(welcomeMessage);

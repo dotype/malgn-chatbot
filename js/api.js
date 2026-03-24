@@ -425,6 +425,20 @@ const API = {
   },
 
   /**
+   * 세션 메시지 초기화 (soft delete)
+   * @param {number} id - 세션 ID
+   * @returns {Promise<Object>} - API 응답
+   */
+  async clearSessionMessages(id) {
+    const response = await fetch(`${this.getBaseUrl()}/sessions/${id}/messages`, {
+      method: 'DELETE',
+      headers: this.getAuthHeaders()
+    });
+
+    return this.handleResponse(response);
+  },
+
+  /**
    * 세션 퀴즈 조회
    * @param {number} id - 세션 ID
    * @returns {Promise<Object>} - API 응답

@@ -19,9 +19,32 @@ export function escapeHtml(text) {
 export function formatContent(content) {
   if (!content) return '';
 
-  // 코드 블록을 먼저 보호 (``` 으로 감싼 영역)
+  // LaTeX 수식을 먼저 보호 (마크다운 처리에서 제외)
+  const mathBlocks = [];
+  let text = content;
+
+  // display math: $$...$$ 또는 \[...\]
+  text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+    const idx = mathBlocks.length;
+    mathBlocks.push(match);
+    return `\x00MATH${idx}\x00`;
+  });
+  text = text.replace(/\\\[([\s\S]*?)\\\]/g, (match) => {
+    const idx = mathBlocks.length;
+    mathBlocks.push(match);
+    return `\x00MATH${idx}\x00`;
+  });
+
+  // inline math: \(...\)
+  text = text.replace(/\\\((.+?)\\\)/g, (match) => {
+    const idx = mathBlocks.length;
+    mathBlocks.push(match);
+    return `\x00MATH${idx}\x00`;
+  });
+
+  // 코드 블록을 보호 (``` 으로 감싼 영역)
   const codeBlocks = [];
-  let text = content.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+  text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
     const idx = codeBlocks.length;
     codeBlocks.push(`<pre class="chatbot-code-block"><code>${escapeHtml(code.trim())}</code></pre>`);
     return `\x00CODEBLOCK${idx}\x00`;
@@ -115,15 +138,67 @@ export function formatContent(content) {
 
   let html = result.join('\n');
 
-  // 코드블록 / 인라인코드 복원
+  // 코드블록 / 인라인코드 / LaTeX 복원
   codeBlocks.forEach((block, i) => {
     html = html.replace(`\x00CODEBLOCK${i}\x00`, block);
   });
   inlineCodes.forEach((code, i) => {
     html = html.replace(`\x00INLINE${i}\x00`, code);
   });
+  mathBlocks.forEach((math, i) => {
+    html = html.replace(`\x00MATH${i}\x00`, math);
+  });
 
   return html;
+}
+
+/**
+ * KaTeX 로드 및 수식 렌더링
+ */
+let katexLoaded = false;
+let katexLoading = false;
+const katexCallbacks = [];
+
+export function loadKaTeX(shadowRoot) {
+  // KaTeX CSS를 Shadow DOM에 주입
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.40/dist/katex.min.css';
+  shadowRoot.appendChild(link);
+
+  if (katexLoaded || katexLoading) return;
+  katexLoading = true;
+
+  // KaTeX core JS
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.40/dist/katex.min.js';
+  script.onload = () => {
+    // Auto-render extension
+    const autoScript = document.createElement('script');
+    autoScript.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.40/dist/contrib/auto-render.min.js';
+    autoScript.onload = () => {
+      katexLoaded = true;
+      katexCallbacks.forEach(cb => cb());
+      katexCallbacks.length = 0;
+    };
+    document.head.appendChild(autoScript);
+  };
+  document.head.appendChild(script);
+}
+
+export function renderMath(element) {
+  if (katexLoaded && window.renderMathInElement) {
+    window.renderMathInElement(element, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+      ],
+      throwOnError: false
+    });
+  } else {
+    katexCallbacks.push(() => renderMath(element));
+  }
 }
 
 /**

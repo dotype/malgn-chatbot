@@ -4,7 +4,7 @@
  * Shadow DOM root를 통해 DOM 쿼리를 수행합니다.
  * 자동 세션 생성: 첫 메시지 전송 시 세션을 생성합니다.
  */
-import { escapeHtml, formatContent } from './utils.js';
+import { escapeHtml, formatContent, renderMath } from './utils.js';
 
 export class ChatManager {
   constructor(api, config, root) {
@@ -177,9 +177,8 @@ export class ChatManager {
         },
         // onDone
         (data) => {
-          // 서버에서 정제된 응답이 있으면 교체
-          const finalText = data?.sanitizedResponse || fullText;
-          contentEl.innerHTML = formatContent(finalText);
+          contentEl.innerHTML = formatContent(fullText);
+          renderMath(contentEl);
           this.scrollToBottom();
           this.setLoading(false);
         },
@@ -217,6 +216,7 @@ export class ChatManager {
     el.className = 'chatbot-msg chatbot-msg--assistant';
     el.innerHTML = `<div class="chatbot-msg-content">${formatContent(content)}</div>`;
     this.messagesEl.appendChild(el);
+    renderMath(el);
     this.scrollToBottom();
   }
 

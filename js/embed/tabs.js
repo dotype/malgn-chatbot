@@ -3,7 +3,7 @@
  *
  * Shadow DOM root를 통해 DOM 쿼리를 수행합니다.
  */
-import { escapeHtml } from './utils.js';
+import { escapeHtml, renderMath } from './utils.js';
 
 export class TabManager {
   constructor(root) {
@@ -95,9 +95,9 @@ export class TabManager {
             <div class="chatbot-recommend-question" data-question="${escapeHtml(q)}">
               <span class="chatbot-badge chatbot-badge-primary">${i + 1}</span>
               <span class="chatbot-recommend-q-text">${escapeHtml(q)}</span>
-              ${a ? '<span class="chatbot-recommend-toggle">▼</span>' : ''}
+              ${a ? '<span class="chatbot-recommend-toggle">▲</span>' : ''}
             </div>
-            ${a ? `<div class="chatbot-recommend-answer" style="display:none;">
+            ${a ? `<div class="chatbot-recommend-answer" style="display:block;">
               <span class="chatbot-recommend-a-label">A.</span> ${escapeHtml(a)}
             </div>` : ''}
           </div>`;
@@ -120,10 +120,16 @@ export class TabManager {
             }
           });
         });
+        // 수식 렌더링
+        renderMath(recommendEl);
       } else {
         recommendEl.textContent = '추천 질문이 생성되지 않았습니다.';
       }
     }
+
+    // 학습 목표/요약에도 수식 렌더링
+    if (goalsEl) renderMath(goalsEl);
+    if (summaryEl) renderMath(summaryEl);
   }
 
   /**

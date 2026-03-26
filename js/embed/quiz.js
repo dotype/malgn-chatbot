@@ -3,7 +3,7 @@
  *
  * Shadow DOM root를 통해 DOM 쿼리를 수행합니다.
  */
-import { escapeHtml } from './utils.js';
+import { escapeHtml, renderMath } from './utils.js';
 
 export class QuizManager {
   constructor(api, root) {
@@ -107,6 +107,7 @@ export class QuizManager {
     `;
 
     quizEl.innerHTML = html;
+    renderMath(quizEl);
 
     // 이벤트 바인딩
     quizEl.querySelectorAll('.chatbot-quiz-option').forEach(el => {
@@ -123,6 +124,11 @@ export class QuizManager {
     if (prevBtn) prevBtn.addEventListener('click', () => this.prev());
     if (nextBtn) nextBtn.addEventListener('click', () => this.next());
     if (checkBtn) checkBtn.addEventListener('click', () => this.checkAnswer());
+
+    // 이미 채점된 퀴즈로 돌아왔을 때 결과 표시
+    if (this.checked[quiz.id]) {
+      this.showResult(quiz);
+    }
   }
 
   prev() {
@@ -159,11 +165,36 @@ export class QuizManager {
     const attempt = this.attempts[quiz.id];
     const isCorrect = userAnswer === quiz.answer;
 
+    this.showResult(quiz, isCorrect, attempt);
+
+    // 정답이거나 2번째 시도 → 채점 완료 처리
+    if (isCorrect || attempt >= 2) {
+      this.checked[quiz.id] = true;
+      const nextBtn = this.root.querySelector('#malgn-next-quiz');
+      const checkBtn = this.root.querySelector('#malgn-check-answer');
+      if (nextBtn && this.currentIndex < this.quizzes.length - 1) nextBtn.style.display = '';
+      if (checkBtn) checkBtn.style.display = 'none';
+    }
+  }
+
+  /**
+   * 결과 표시 (채점 시 + 이전/다음 이동 시 재표시)
+   */
+  showResult(quiz, isCorrect, attempt) {
+    const resultEl = this.root.querySelector('#malgn-quiz-result');
+    if (!resultEl) return;
+
+    // 이미 채점된 퀴즈로 돌아온 경우 상태 복원
+    if (isCorrect === undefined) {
+      const userAnswer = this.answers[quiz.id];
+      isCorrect = userAnswer === quiz.answer;
+      attempt = this.attempts[quiz.id] || 1;
+    }
+
     const resultClass = isCorrect ? 'chatbot-result-correct' : 'chatbot-result-wrong';
     const resultIcon = isCorrect ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
     const resultText = isCorrect ? '정답입니다.' : '오답입니다.';
 
-    // 배경색 클래스 추가
     resultEl.className = `chatbot-quiz-result ${isCorrect ? 'correct' : 'wrong'}`;
 
     let html = `
@@ -183,15 +214,7 @@ export class QuizManager {
     }
 
     resultEl.innerHTML = html;
+    renderMath(resultEl);
     resultEl.style.display = 'block';
-
-    // 정답이거나 2번째 시도 → 다음 버튼 표시
-    if (isCorrect || attempt >= 2) {
-      this.checked[quiz.id] = true;
-      const nextBtn = this.root.querySelector('#malgn-next-quiz');
-      const checkBtn = this.root.querySelector('#malgn-check-answer');
-      if (nextBtn && this.currentIndex < this.quizzes.length - 1) nextBtn.style.display = '';
-      if (checkBtn) checkBtn.style.display = 'none';
-    }
   }
 }

@@ -40,6 +40,7 @@ import { UI } from './ui.js';
 import { ChatManager } from './chat.js';
 import { TabManager } from './tabs.js';
 import { QuizManager } from './quiz.js';
+import { loadKaTeX } from './utils.js';
 
 // 중복 로드 방지
 if (window.__malgnTutorLoaded) {
@@ -81,6 +82,9 @@ if (window.__malgnTutorLoaded) {
     // Shadow root 참조 (모든 모듈이 DOM 쿼리 시 사용)
     const root = UI.root;
 
+    // KaTeX 수식 렌더링 로드 (Shadow DOM에 CSS 주입)
+    loadKaTeX(root);
+
     // Tab 매니저
     const tabManager = new TabManager(root);
     tabManager.init();
@@ -94,6 +98,7 @@ if (window.__malgnTutorLoaded) {
     // Chat 매니저
     const chatManager = new ChatManager(api, {
       contentIds: cfg.contentIds || [],
+      chatContentIds: cfg.chatContentIds || [],
       courseId: cfg.courseId || 0,
       courseUserId: cfg.courseUserId || 0,
       lessonId: cfg.lessonId || 0,

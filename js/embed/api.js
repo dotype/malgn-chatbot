@@ -48,6 +48,7 @@ export class Api {
     if (config.userId) body.user_id = config.userId;
     if (config.settings) body.settings = config.settings;
     if (config.parentSessionId) body.parent_id = config.parentSessionId;
+    if (config.chatContentIds && config.chatContentIds.length > 0) body.chat_content_ids = config.chatContentIds;
 
     const response = await fetch(`${this.baseUrl}/sessions`, {
       method: 'POST',
